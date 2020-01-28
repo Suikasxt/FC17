@@ -1,0 +1,19 @@
+{% if result %}
+	<p>{{result}}</p>
+{% endif %}
+
+{% if tips %}
+	<p>{{tips}}</p>
+{% endif %}
+<form  acrion = "/createTeam"  method = "post">
+	<div>
+		<span> Name: </span>
+		<input  type = "text"  name = "name"/>
+	</div>
+	
+	<div>
+		<span> Introduction: </span>
+		<input  type = "text"  name = "introduction"/>
+	</div>
+	<input  type = "submit"  value = "submit"/>
+</form>

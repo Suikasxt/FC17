@@ -1,0 +1,32 @@
+<p>{{team.name}}</p>
+<p>{{team.introduction}}</p>
+<p>{{captain.username}}</p>
+{% for member in members %}
+	<p>{{member.username}}</p>
+{% endfor %}
+
+
+{% if user %}
+	{% if user.isMember == 0 %}
+		{% if user.team == team %}
+			<p>Waiting Reply</p>
+		{% else %}
+			<form  action = "/team/?id={{team.id}}"  method = "post">
+				<input  type = "hidden"  name = "action"  value = "Join">
+				<input  type = "submit"  value = "Join"/>
+			</form>
+		{% endif %}
+	{% elif user.team == team %}
+		{% if user.isCaptain == 1%}
+			<form  action = "/team/?id={{team.id}}"  method = "post">
+				<input  type = "hidden"  name = "action"  value = "Dismiss">
+				<input  type = "submit"  value = "Dismiss"/>
+			</form>
+		{% else %}
+			<form  action = "/team/?id={{team.id}}"  method = "post">
+				<input  type = "hidden"  name = "action"  value = "Exit">
+				<input  type = "submit"  value = "Exit"/>
+			</form>
+		{% endif%}
+	{% endif %}
+{% endif %}

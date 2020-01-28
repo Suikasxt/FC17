@@ -1,0 +1,9 @@
+{% for team in teamList %}
+	<p>
+		<a  href = "/team?id={{team.id}}">
+			{{team.id}}
+		</a>
+		{{team.name}}
+		{{team.introduction}}
+	</p>
+{% endfor %}
