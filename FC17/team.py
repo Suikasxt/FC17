@@ -80,7 +80,7 @@ def detail(request):
 					user.team = None
 					user.isMember = 0
 					user.save()
-				elif (user.isCaptain == 1 and request.POST.get('action') == 'Dismiss'):
+				elif (user.isCaptain == 1 and request.POST.get('action') == 'Disband'):
 					user.team = None
 					Users.objects.filter(team = team).update(team = None, isMember = False)
 					team.delete()

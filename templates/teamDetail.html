@@ -19,8 +19,8 @@
 	{% elif user.team == team %}
 		{% if user.isCaptain == 1%}
 			<form  action = "/team/?id={{team.id}}"  method = "post">
-				<input  type = "hidden"  name = "action"  value = "Dismiss">
-				<input  type = "submit"  value = "Dismiss"/>
+				<input  type = "hidden"  name = "action"  value = "Disband">
+				<input  type = "submit"  value = "Disband"/>
 			</form>
 		{% else %}
 			<form  action = "/team/?id={{team.id}}"  method = "post">
