@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+	{% include "menu.html" %}
+
+	{% for team in teamList %}
+		<p>
+			<a  href = "/team/{{team.id}}/">
+				{{team.id}}
+			</a>
+			{{team.name}}
+			{{team.introduction}}
+		</p>
+	{% endfor %}
+
+
+</body>
+</html>

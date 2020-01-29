@@ -1,9 +1,0 @@
-{% for candidate in candidateList %}
-	<div>
-		<span>{{candidate.username}}</span>
-		<form  action="/teamManage/"  method = "post"  style = "display:inline">
-			<input  type = "hidden"  name = "accept"  value = "{{candidate.id}}"/>
-			<input  type = "submit"  value = "Accept"/>
-		</form>
-	</div>
-{% endfor %}

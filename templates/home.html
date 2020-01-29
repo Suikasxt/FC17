@@ -1,5 +1,14 @@
-{% if User %}
-	<p>{{User.username}}</p>
-{% else %}
-	<p>未登入</p>
-{% endif %}
+<!DOCTYPE html>
+<html>
+<body>
+
+	{% include "menu.html" %}
+
+	{% if UserInformation %}
+		<p>{{UserInformation.username}}</p>
+	{% else %}
+		<p>未登入</p>
+	{% endif %}
+
+</body>
+</html>

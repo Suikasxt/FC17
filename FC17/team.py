@@ -5,7 +5,6 @@ from FC17Website.models import Users
 from FC17Website.models import Teams
 from FC17 import tools
 from FC17 import view
-from FC17.style import *
 import json
 
 
@@ -13,12 +12,12 @@ import json
 def manage(request):
 	user = request.session.get('User')
 	if (user == None):
-		return alert(request, 'Please login!')
+		return view.alert(request, 'Please login!')
 	
 	user = Users.objects.get(id = user['id'])
 	
 	if (user.isCaptain == False):
-		return alert(request, 'You are not a captain.')
+		return view.alert(request, 'You are not a captain.')
 	
 	context = { 'team' : user.team }
 	
@@ -33,14 +32,14 @@ def manage(request):
 	context['candidateList'] = []
 	for candidate in candidateList:
 		context['candidateList'].append(json.loads(candidate.information))
-	return mainStyle(request, 'teamManage.html', context)
+	return view.mainStyle(request, 'team/manage.html', context)
 	
 
 
 def create(request):
 	user = request.session.get('User')
 	if (user == None):
-		return alert(request, 'Please login!')
+		return view.alert(request, 'Please login!')
 		
 	context = {}
 	if (request.POST and request.POST.get('name') and request.POST.get('introduction')):
@@ -49,28 +48,22 @@ def create(request):
 		context['result'] = result
 		context['tips'] = tips
 		return detail(request)
-	return mainStyle(request, 'createTeam.html', context)
+	return view.mainStyle(request, 'team/create.html', context)
 
 
 
 
-def detail(request):
+def detail(request, teamID = None):
 	user = request.session.get('User')
 	if (user != None):
 		user = Users.objects.get(id = user['id'])
 	
 	
 	
-	teamID = None
-	if (request.GET and request.GET.get('id')):
-		teamID = request.GET.get('id')
-	
-	
-	
 	if (teamID):
 		team = Teams.objects.get(id = teamID)
 		if (team == None):
-			return alert("Team doesn't exist")
+			return view.alert("Team doesn't exist")
 		if (user and request.POST):
 			if (user.isMember == 0 and request.POST.get('action') == 'Join'):
 				user.team = team
@@ -90,7 +83,7 @@ def detail(request):
 					return redirect("/team/")
 	else:
 		if (user == None):
-			return alert(request, 'Please login!')
+			return view.alert(request, 'Please login!')
 	
 		if (user.isMember == False):
 			return create(request)
@@ -111,7 +104,7 @@ def detail(request):
 	context['members'] = memberList
 	context['captain'] = captain
 	context['user'] = user
-	return mainStyle(request, 'teamDetail.html', context)
+	return view.mainStyle(request, 'team/detail.html', context)
 
 
 
@@ -119,4 +112,4 @@ def detail(request):
 def list(request):
 	teamList = Teams.objects.all()
 	context = {'teamList' : teamList}
-	return mainStyle(request, 'teamList.html', context)
+	return view.mainStyle(request, 'team/list.html', context)

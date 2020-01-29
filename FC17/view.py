@@ -3,10 +3,25 @@ from django.shortcuts import render
 from django.shortcuts import redirect
 from FC17Website.models import Users
 from FC17 import tools
-from FC17.style import *
 import json
 
+
+#用于统一页面风格
+def mainStyle(request, content = "home.html", context = {}):
+	user = request.session.get('User')
+	if (user != None):
+		user = Users.objects.get(id = user['id'])
+		context['User'] = user
+		context['UserInformation'] = json.loads(user.information)
+		
+	return render(request, content, context)
+
 def login(request):
+	try:
+		del request.session['User']
+	except:
+		pass
+		
 	#如果从token和ID成功得到了用户信息，就记录进session
 	if (request.POST and request.POST.get('token') and request.POST.get('ID')):
 		userInfo, status_code = tools.getUserInfo(request.POST['token'], request.POST['ID'])
@@ -26,16 +41,11 @@ def login(request):
 
 
 def home(request):
-	context = {}
-	user = request.session.get('User')
-	if (user):
-		context['User'] = user
-	return mainStyle(request, 'home.html', context)
-
+	return mainStyle(request, 'home.html')
 
 
 
 def alert(request, output = 'test'):
 	context = {}
 	context['word'] = json.dumps(output)
-	return render(request, 'alert.html', context)
+	return mainStyle(request, 'alert.html', context)

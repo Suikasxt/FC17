@@ -17,13 +17,18 @@ from django.contrib import admin
 from django.urls import path
 from FC17 import view
 from FC17 import team
+from FC17 import notice
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('test/', view.alert),
     path('login/', view.login),
+    path('notice/', notice.list),
+    path('notice/create/', notice.create),
+    path('notice/<int:noticeID>/', notice.detail),
+    path('team/<int:teamID>/', team.detail),
     path('team/', team.detail),
-    path('teamList/', team.list),
-    path('teamManage/', team.manage),
+    path('team/list/', team.list),
+    path('team/manage/', team.manage),
     path('', view.home),
 ]

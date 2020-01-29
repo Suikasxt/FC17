@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+	{% include "menu.html" %}
+
+	{% if result %}
+		<p>{{result}}</p>
+	{% endif %}
+
+	{% if tips %}
+		<p>{{tips}}</p>
+	{% endif %}
+	<form  acrion = "/notice/create/"  method = "post">
+		<div>
+			<span> Title: </span>
+			<input  type = "text"  name = "title"/>
+		</div>
+		
+		<div>
+			<span> Content: </span>
+			<input  type = "text"  name = "content"/>
+		</div>
+		<input  type = "submit"  value = "submit"/>
+	</form>
+
+</body>
+</html>

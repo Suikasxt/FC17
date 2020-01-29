@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+	{% include "menu.html" %}
+	
+	<a  href = "/notice/create">
+		<button> Create a new notice </button>
+	</a>
+
+	{% for notice in noticeList %}
+		<p>
+			<a  href = "/notice/{{notice.id}}/">
+				{{notice.id}}
+			</a>
+			{{notice.title}}
+			{{notice.time}}
+		</p>
+	{% endfor %}
+
+
+</body>
+</html>
