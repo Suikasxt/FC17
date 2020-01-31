@@ -13,7 +13,8 @@ def mainStyle(request, content = "home.html", context = {}):
 		user = Users.objects.get(id = user['id'])
 		context['User'] = user
 		context['UserInformation'] = json.loads(user.information)
-		
+	
+	return HttpResponse(json.dumps(context), content_type = 'application/json')
 	return render(request, content, context)
 
 def login(request):
