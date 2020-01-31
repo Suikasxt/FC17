@@ -5,18 +5,19 @@ from bs4 import BeautifulSoup
 
 #session = requests.session()
 #headers = {'authorization' : 'Bearer token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjAxODAxMDg2NywidXNlcm5hbWUiOiJzd21fc3h0IiwibmFtZSI6IuayiOaZk-iFviIsImVtYWlsIjoic2hlbi14dDE4QG1haWxzLnRpbmdodWEuZWR1LmNuIiwicGhvbmUiOjEzMDUxMTUxOTExLCJncm91cCI6InN0dWRlbnQiLCJyb2xlIjoic3R1ZGVudCIsImRlcGFydG1lbnQiOiLoh6rliqjljJbns7siLCJjbGFzcyI6IuiHqjg2IiwiaHR0cHM6Ly9oYXN1cmEuaW8vand0L2NsYWltcyI6eyJ4LWhhc3VyYS1hbGxvd2VkLXJvbGVzIjpbInJvb3QiLCJlZGl0b3IiLCJrZWVwZXIiLCJvcmdhbml6ZXIiLCJjb3Vuc2Vsb3IiLCJzdHVkZW50Iiwid3JpdGVyIiwidGVhY2hlciJdLCJ4LWhhc3VyYS1kZWZhdWx0LXJvbGUiOiJzdHVkZW50IiwieC1oYXN1cmEtdXNlci1pZCI6IjIwMTgwMTA4NjcifSwiaWF0IjoxNTc5OTY2NjAwLCJleHAiOjE1ODAwMDk4MDB9.KtXY3ghYTi-VbWbxverYQ9YFLxTYstLVR_1MZL4VDn4'}
+headers = {'JSONONLY' : 'True'}
 data = {
 	'token' : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjAxODAxMDg2NywidXNlcm5hbWUiOiJzd21fc3h0IiwibmFtZSI6IuayiOaZk-iFviIsImVtYWlsIjoic2hlbi14dDE4QG1haWxzLnRpbmdodWEuZWR1LmNuIiwicGhvbmUiOjEzMDUxMTUxOTExLCJncm91cCI6InN0dWRlbnQiLCJyb2xlIjoic3R1ZGVudCIsImRlcGFydG1lbnQiOiLoh6rliqjljJbns7siLCJjbGFzcyI6IuiHqjg2IiwiaHR0cHM6Ly9oYXN1cmEuaW8vand0L2NsYWltcyI6eyJ4LWhhc3VyYS1hbGxvd2VkLXJvbGVzIjpbInJvb3QiLCJlZGl0b3IiLCJrZWVwZXIiLCJvcmdhbml6ZXIiLCJjb3Vuc2Vsb3IiLCJzdHVkZW50Iiwid3JpdGVyIiwidGVhY2hlciJdLCJ4LWhhc3VyYS1kZWZhdWx0LXJvbGUiOiJzdHVkZW50IiwieC1oYXN1cmEtdXNlci1pZCI6IjIwMTgwMTA4NjcifSwiaWF0IjoxNTc5OTY2NjAwLCJleHAiOjE1ODAwMDk4MDB9.KtXY3ghYTi-VbWbxverYQ9YFLxTYstLVR_1MZL4VDn4',
 	'ID' : '2018010867'
 	}
-url = 'http://localhost:8000/login/'
+url = 'http://localhost:8000/team/list/'
 
 
 #携带token和ID进行POST
-res = requests.post(url, data = data)
+res = requests.post(url, data = data, headers = headers)
 print(res.text)
 
-
+exit(0);
 #不携带信息
 res = requests.post(url)
 print(res.text)

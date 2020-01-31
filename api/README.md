@@ -3,6 +3,14 @@
 
 
 
+## 后端API列表（持续更新）
+
++ /login/：post携带token，返回值提示信息
++ /user/：获取已登录用户信息
++ /user/{userid}：获取指定id用户信息
+
+
+
 ## 2020/01/26——sxt
 
 1. 创建superuser

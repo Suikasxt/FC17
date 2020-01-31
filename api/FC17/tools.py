@@ -4,6 +4,7 @@ from FC17Website.models import Users
 from FC17Website.models import Teams
 from FC17Website.models import Notices
 from FC17Website.models import Comments
+server = 'https://api.eesast.com'
 
 def submitComment(userID, content, notice):
 	if userID == None:
@@ -43,12 +44,28 @@ def createTeam(userID, teamName = 'Unnamed', introduction = ''):
 	return True, 'Create successfully.'
 
 #根据token和ID获取
-def getUserInfo(token, ID):
+def getUserInfoToken(token, ID):
 	headers = {'authorization' : 'Bearer token=' + str(token)}
-	url = "https://api.eesast.com/v1/users/" + str(ID)
+	url = server + "/v1/users/" + str(ID)
 	res = requests.get(url, headers = headers)
-	try:
-		userInfo = json.loads(res.text)
-	except:
-		userInfo = ""
-	return userInfo, res.status_code
+	if (res.status_code != 200):
+		result = 'Token not available.'
+	else:
+		try:
+			result = json.loads(res.text)
+			result['token'] = token
+		except:
+			result = 'System Error'
+	return result, res.status_code
+
+
+#根据username和password获取
+def getUserInfoPassword(username, ID, password):
+	data = {'username' : username, 'password' : password}
+	url = server + "/v1/users/login"
+	print(url, data)
+	res = requests.post(url, data = data)
+	if res.status_code != 200:
+		return "Invalid ID and password", res.status_code
+	token = json.loads(res.text)['token']
+	return getUserInfoToken(token, ID)

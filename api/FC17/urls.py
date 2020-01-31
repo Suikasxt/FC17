@@ -18,6 +18,7 @@ from django.urls import path
 from FC17 import view
 from FC17 import team
 from FC17 import notice
+from FC17.api import user as api_user
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,4 +32,8 @@ urlpatterns = [
     path('team/list/', team.list),
     path('team/manage/', team.manage),
     path('', view.home),
+	
+    path('api/user/login/', api_user.login),
+    path('api/user/<int:userID>/', api_user.detail),
+    path('api/user/', api_user.detail),
 ]
