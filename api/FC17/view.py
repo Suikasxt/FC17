@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.shortcuts import redirect
 from FC17Website.models import Users
+from FC17.api import user as api_user
 from FC17 import tools
 import json
 
@@ -17,11 +18,7 @@ def mainStyle(request, content = "home.html", context = {}):
 	return render(request, content, context)
 
 def login(request):
-	try:
-		del request.session['User']
-	except:
-		pass
-		
+	status_code = 0
 	#如果从token和ID成功得到了用户信息，就记录进session
 	if (request.POST and request.POST.get('token') and request.POST.get('ID')):
 		result, status_code = tools.getUserInfoToken(request.POST['token'], request.POST['ID'])
@@ -52,3 +49,6 @@ def alert(request, output = 'test'):
 	context = {}
 	context['word'] = json.dumps(output)
 	return mainStyle(request, 'alert.html', context)
+
+def logout(request):
+	return api_user.logout(request)

@@ -5,7 +5,7 @@
 
 ## 后端API列表（持续更新）
 
-+ /login/：post携带token，返回值提示信息
++ api/user/login/：post携带token、ID或者username、ID、password，返回提示信息
 + /user/：获取已登录用户信息
 + /user/{userid}：获取指定id用户信息
 
@@ -40,3 +40,9 @@
 1. 完成搭建公告系统和评论系统
 2. 调整了部分代码结构
 3. <font color=red>尝试了一下logout发现并不能登出？？？</font> 
+
+
+
+## 2020/02/01——sxt
+
+1. 前端实现登录，但代码结构散乱，后期可以看情况调整

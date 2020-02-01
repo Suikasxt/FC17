@@ -63,7 +63,7 @@ def getUserInfoToken(token, ID):
 def getUserInfoPassword(username, ID, password):
 	data = {'username' : username, 'password' : password}
 	url = server + "/v1/users/login"
-	print(url, data)
+	
 	res = requests.post(url, data = data)
 	if res.status_code != 200:
 		return "Invalid ID and password", res.status_code

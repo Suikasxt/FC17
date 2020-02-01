@@ -24,6 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('test/', view.alert),
     path('login/', view.login),
+    path('logout/', view.logout),
     path('notice/', notice.list),
     path('notice/create/', notice.create),
     path('notice/<int:noticeID>/', notice.detail),
@@ -36,4 +37,5 @@ urlpatterns = [
     path('api/user/login/', api_user.login),
     path('api/user/<int:userID>/', api_user.detail),
     path('api/user/', api_user.detail),
+    path('api/user/logout/', api_user.logout),
 ]
