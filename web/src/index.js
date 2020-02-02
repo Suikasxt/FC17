@@ -8,26 +8,29 @@ import $ from 'jquery';
 import { Layout, Menu, Breadcrumb, Icon } from 'antd';
 import Home from './home.js'
 import Login from './login.js'
+import Information from './information.js'
+import TeamList from './team/list.js'
+import TeamDetail from './team/detail.js'
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 
 
 
-class SiderDemo extends React.Component {
-	constructor(props) {
-		super(props);
-		this.tryLogin();
-	}
+class App extends React.Component {
 	state = {
 		collapsed: false,
 		user: null,
-	};
+	}
 	
 	onCollapse = collapsed => {
 		console.log(collapsed);
 		this.setState({ collapsed });
-	};
+	}
+	
+	componentWillMount(){
+		this.tryLogin();
+	}
 	
 	tryLogin = () => {
 		if (this.state.user != null) return;
@@ -38,14 +41,15 @@ class SiderDemo extends React.Component {
 			xhrFields: {
                 withCredentials: true
             },
+			async: false,
 			success: function (result) {
 				if (result.id){
-					this.setState({'user' : result});
-					window.location.href = "#/";
+					this.setState({user : result});
 				}
 			}.bind(this)
 		});
-	};
+	}
+	
 	logout = (e) => {
 		let url = global.constants.server + 'api/user/logout/';
 		this.logoutRequest = $.get({
@@ -55,40 +59,91 @@ class SiderDemo extends React.Component {
                 withCredentials: true
             },
 			success: function (result) {
-				this.setState({'user' : null});
+				this.setState({user : null});
 			}.bind(this)
 		});
 	}
-
-	render() {
-		let user = null
+	
+	getUserMenu = () =>{
 		if (this.state.user != null){
-			user = (
+			return (
 			<SubMenu
 				key="user"
 				title={
 					<span>
 						<Icon type="user" />
-						<span>User</span>
+						<span>{this.state.user.username}</span>
 					</span>
 				}
 			>
-				<Menu.Item key="personal" >
-					<Link to="personal">
-						<span>Personal Data</span>
+				<Menu.Item key="information" >
+					<Link to="/information">
+						<span>Information</span>
 					</Link>
 				</Menu.Item>
-				<Menu.Item key="logout" onClick={this.logout}>Logout</Menu.Item>
-			</SubMenu>)
+				<Menu.Item key="logout" onClick={this.logout}>Log out</Menu.Item>
+			</SubMenu>
+			)
 		}else{
-			user = (
+			return (
 			<Menu.Item key="login">
 				<Link to="/login">
 					<Icon type="user" />
 					<span>Login</span>
 				</Link>
-			</Menu.Item>)
+			</Menu.Item>
+			)
 		}
+	}
+	
+	getTeamMenu = () => {
+		if (this.state.user != null){
+			return (
+				<SubMenu
+					key="team"
+					title={
+						<span>
+							<Icon type="team" />
+							<span>Team</span>
+						</span>
+					}
+				>
+					<Menu.Item key="teamList" >
+						<Link to="/team/list">
+							<span>Team List</span>
+						</Link>
+					</Menu.Item>
+					
+					{this.state.user.isMember ? (
+						<Menu.Item key="myTeam">
+							<Link to={"/team/detail/" + this.state.user.team.id}>
+								<span>{this.state.user.team.name}</span>
+							</Link>
+						</Menu.Item>
+					) : (
+						<Menu.Item key="createTeam" >
+							<Link to="/team/list">
+								<span>Create Team</span>
+							</Link>
+						</Menu.Item>
+					)}
+				</SubMenu>
+			)
+		}else{
+			return (
+				<Menu.Item key="teamList">
+					<Link to="/team/list">
+						<Icon type="user" />
+						<span>Team List</span>
+					</Link>
+				</Menu.Item>
+			)
+		}
+	}
+
+	render() {
+		let user = this.getUserMenu()
+		let team = this.getTeamMenu()
 		
 		
 		return (
@@ -104,6 +159,7 @@ class SiderDemo extends React.Component {
 								</Link>
 							</Menu.Item>
 							{user}
+							{team}
 						</Menu>
 					</Sider>
 					<Layout>
@@ -112,7 +168,25 @@ class SiderDemo extends React.Component {
 						</Header>
 						<Content style={{ margin: '10px 16px' }}>
 							<Route path="/" exact component={Home}/>
-							<Route path="/login" render={props => <Login tryLogin={this.tryLogin.bind(this)} {...props} />}/>
+							<Route path="/information" render={props => 
+								<Information
+									user={this.state.user}
+									{...props} 
+								/>}
+							/>
+							<Route path="/login" render={props =>
+								<Login
+									unLogin={this.state.user == null}
+									tryLogin={this.tryLogin.bind(this)}
+									{...props}
+								/>}
+							/>
+							<Route path="/team/list" exact render={props =>
+								<TeamList
+									user={this.state.user}
+								/>}
+							/>
+							<Route path="/team/detail/:teamID" exact component={TeamDetail}/>
 						</Content>
 						<Footer style={{ textAlign: 'center' }}>FC17</Footer>
 					</Layout>
@@ -122,4 +196,4 @@ class SiderDemo extends React.Component {
 	}
 }
 
-ReactDOM.render(<SiderDemo />, document.getElementById('container'));
+ReactDOM.render(<App />, document.getElementById('container'));

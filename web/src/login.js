@@ -1,5 +1,6 @@
 import './config';
 import $ from 'jquery';
+import { withRouter, Link } from 'react-router-dom';
 import React, { Component } from 'react';
 import './login.css';
 import { Form, Icon, Input, Button, Checkbox, Alert } from 'antd';
@@ -9,12 +10,21 @@ class Login extends Component{
 	state = {
 		message : null,
 	}
+	componentWillReceiveProps(nextProps){
+		if (nextProps.unLogin === false){
+			this.props.history.push('/');
+		}
+	}
+	componentWillMount(){
+		if (this.props.unLogin === false){
+			this.props.history.push('/');
+		}
+	}
 	handleSubmit = (e) => {
 		e.preventDefault();
 		this.props.form.validateFields((err, values) => {
 			if (!err) {
 				let url = global.constants.server + 'api/user/login/';
-				console.log(values)
 				this.serverRequest = $.post({
 					url: url,
 					data: values,

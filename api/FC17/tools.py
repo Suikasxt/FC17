@@ -69,3 +69,9 @@ def getUserInfoPassword(username, ID, password):
 		return "Invalid ID and password", res.status_code
 	token = json.loads(res.text)['token']
 	return getUserInfoToken(token, ID)
+
+def getCurrentUser(request):
+	try:
+		return Users.objects.get(id = request.session.get('User')['id'])
+	except:
+		return None

@@ -1,6 +1,7 @@
 from django.db import models
 
 class Teams(models.Model):
+	avatar = models.FileField(upload_to='avatars/', default="/avatars/default.png")
 	name = models.CharField(max_length = 31, default = '')
 	introduction = models.CharField(max_length = 255, default = '')
 

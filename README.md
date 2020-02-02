@@ -6,8 +6,12 @@
 ## 后端API列表（持续更新）
 
 + api/user/login/：post携带token、ID或者username、ID、password，返回提示信息
-+ /user/：获取已登录用户信息
-+ /user/{userid}：获取指定id用户信息
++ api/user/：获取已登录用户信息
++ api/user/{userid}：获取指定id用户信息
++ api/logout/：登出
++ api/team/：获取当前已登录用户队伍信息
++ api/team/{teamid}：获取指定id队伍信息
++ api/team/list：获取队伍列表
 
 
 
@@ -46,3 +50,15 @@
 ## 2020/02/01——sxt
 
 1. 前端实现登录，但代码结构散乱，后期可以看情况调整
+
+
+
+## 2020/02/02——sxt
+
+前端：
+
+1. 登出
+2. 个人信息
+3. 队伍列表
+
+增添了一些对于非法url的重定向

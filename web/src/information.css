@@ -1,0 +1,14 @@
+#root{
+	padding: 24px;
+	background: #fff;
+	min-Height: 360px;
+	text-align: center;
+	font-size: 18px;
+}
+#username{
+	font-weight: bolder;
+	font-size: 50px;
+}
+#information{
+	padding: 30px;
+}
