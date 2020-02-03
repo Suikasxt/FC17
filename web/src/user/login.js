@@ -1,4 +1,4 @@
-import './config';
+import '../config';
 import $ from 'jquery';
 import { withRouter, Link } from 'react-router-dom';
 import React, { Component } from 'react';

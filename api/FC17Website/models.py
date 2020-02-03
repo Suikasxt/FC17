@@ -1,7 +1,6 @@
 from django.db import models
 
 class Teams(models.Model):
-	avatar = models.FileField(upload_to='avatars/', default="/avatars/default.png")
 	name = models.CharField(max_length = 31, default = '')
 	introduction = models.CharField(max_length = 255, default = '')
 
@@ -11,6 +10,7 @@ class Users(models.Model):
 	team = models.ForeignKey(to = Teams, on_delete = models.SET_NULL, null = True, related_name = 'belong_to')#isMember为否时表示申请加入该队伍
 	isCaptain = models.BooleanField(default = False)#仅在队伍中且为队长是为真
 	isMember = models.BooleanField(default = False)#在队伍中（包括队长）时为真
+	avatar = models.FileField(upload_to='avatars/', default="/avatars/default.png")
 	adminLevel = models.IntegerField(default = 0)#管理员权限
 
 class Notices(models.Model):

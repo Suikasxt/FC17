@@ -7,8 +7,8 @@ import './index.css';
 import $ from 'jquery';
 import { Layout, Menu, Breadcrumb, Icon } from 'antd';
 import Home from './home.js'
-import Login from './login.js'
-import Information from './information.js'
+import Login from './user/login.js'
+import Information from './user/information.js'
 import TeamList from './team/list.js'
 import TeamDetail from './team/detail.js'
 

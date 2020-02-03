@@ -2,6 +2,7 @@ import '../config';
 import { withRouter, Link } from 'react-router-dom';
 import $ from 'jquery';
 import React, { Component } from 'react';
+import './detail.css';
 import { Button, Card  } from 'antd';
 
 
@@ -31,8 +32,12 @@ class List extends Component{
 		}
 		return (
 			<div  id = "root">
-				{this.state.team.name}
-				{this.state.team.introduction}
+				<div  id = "name">
+					{this.state.team.name}
+				</div>
+				<div  id = "introduction">
+					{this.state.team.introduction}
+				</div>
 			</div>
 		)
 	}

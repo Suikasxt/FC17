@@ -15,6 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf.urls import url
+from django.views.static import serve
+from FC17 import settings
 from FC17 import view
 from FC17 import team
 from FC17 import notice
@@ -22,6 +25,8 @@ from FC17.api import user as api_user
 from FC17.api import team as api_team
 
 urlpatterns = [
+	url(r'^media/(?P<path>.*)$', serve, {"document_root": settings.MEDIA_ROOT}),
+	
     path('admin/', admin.site.urls),
     path('test/', view.alert),
     path('login/', view.login),
@@ -39,6 +44,7 @@ urlpatterns = [
     path('api/user/<int:userID>/', api_user.detail),
     path('api/user/', api_user.detail),
     path('api/user/logout/', api_user.logout),
+    path('api/user/update/', api_user.update),
     path('api/team/list/', api_team.list),
     path('api/team/', api_team.detail),
     path('api/team/<int:teamID>/', api_team.detail),

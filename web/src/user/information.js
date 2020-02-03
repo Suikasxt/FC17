@@ -1,4 +1,4 @@
-import './config';
+import '../config';
 import { withRouter, Link } from 'react-router-dom';
 import $ from 'jquery';
 import React, { Component } from 'react';
@@ -21,7 +21,7 @@ class Informathion extends Component{
 		}
 		let userTeam = { tips : 'Team', content : 'None'}
 		if (user.team){
-			userTeam.content = <Link to='user/{user.team.id}'>{user.team.name}</Link>
+			userTeam.content = <Link to={'team/detail/' + user.team.id}>{user.team.name}</Link>
 			if (!user.isMember){
 				userTeam.tips = 'Team (applying)'
 			}

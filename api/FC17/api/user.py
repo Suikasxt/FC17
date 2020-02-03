@@ -51,6 +51,7 @@ def detail(request, userID = -1):
 		del res['token']
 		res['isCaptain'] = user.isCaptain
 		res['isMember'] = user.isMember
+		res['avatar'] = str(user.avatar)
 		if (user.team):
 			res['team'] = {
 				'id' : user.team.id,
@@ -60,6 +61,13 @@ def detail(request, userID = -1):
 			
 	return HttpResponse(json.dumps(res), content_type = 'application/json')
 
+def update(request):
+	user = tools.getCurrentUser(request)
+	if (user == None):
+		return HttpResponse(json.dumps('Please log in.'), content_type = 'application/json')
+		
+	changes = {}
+	return HttpResponse(json.dumps(changes), content_type = 'application/json')
 
 def logout(request):
 	try:

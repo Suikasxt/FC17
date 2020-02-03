@@ -3,3 +3,11 @@
   background: rgba(255, 255, 255, 0.2);
   margin: 16px;
 }
+#root{
+	padding: 60px;
+	background: #fff;
+	min-Height: 360px;
+	text-align: center;
+	align-items: center;
+	font-size: 18px;
+}
