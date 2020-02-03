@@ -23,6 +23,7 @@ from FC17 import team
 from FC17 import notice
 from FC17.api import user as api_user
 from FC17.api import team as api_team
+from FC17.api import notice as api_notice
 
 urlpatterns = [
 	url(r'^media/(?P<path>.*)$', serve, {"document_root": settings.MEDIA_ROOT}),
@@ -48,4 +49,5 @@ urlpatterns = [
     path('api/team/list/', api_team.list),
     path('api/team/', api_team.detail),
     path('api/team/<int:teamID>/', api_team.detail),
+    path('api/notice/list/', api_notice.list),
 ]
