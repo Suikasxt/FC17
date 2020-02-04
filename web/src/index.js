@@ -12,6 +12,7 @@ import Information from './user/information.js';
 import TeamList from './team/list.js';
 import TeamDetail from './team/detail.js';
 import TeamManage from './team/manage.js';
+import Notice from './notice.js';
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -153,7 +154,6 @@ class App extends React.Component {
 		let user = this.getUserMenu()
 		let team = this.getTeamMenu()
 		
-		
 		return (
 			<Router>
 				<Layout style={{ minHeight: '100vh' }}>
@@ -168,6 +168,12 @@ class App extends React.Component {
 							</Menu.Item>
 							{user}
 							{team}
+							<Menu.Item key="notice">
+								<Link to="/notice">
+									<Icon type="info-circle" />
+									<span>Notice</span>
+								</Link>
+							</Menu.Item>
 						</Menu>
 					</Sider>
 					<Layout>
@@ -207,6 +213,11 @@ class App extends React.Component {
 									user={this.state.user}
 									updateUser={this.updateUser.bind(this)}
 									{...props}
+								/>}
+							/>
+							<Route path="/notice" exact render={props =>
+								<Notice
+									user={this.state.user}
 								/>}
 							/>
 						</Content>

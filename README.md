@@ -12,13 +12,13 @@
 + api/team/：获取当前已登录用户队伍信息
 + api/team/{teamid}：获取指定id队伍信息
 + api/team/list：获取队伍列表
++ api/notice/list：获取公告列表
 + api/team/quit/：退出当前队伍或取消入队申请
 + api/team/apply/{teamid}：申请加入某队伍（同一时刻只能申请一个，会覆盖之前的请求）
 + api/team/manage/：修改队伍信息，post可携带数据为：
   + name、introduction（string）：直接修改队伍信息，若用户当前不属于任何队伍则创建新队伍
   + accept、dismiss（int）：通过某用户申请或踢出队内某用户
   + disband（boolean）：为true时解散队伍
-
 
 
 ## 2020/01/26——sxt
@@ -66,8 +66,13 @@
 1. 登出
 2. 个人信息
 3. 队伍列表
-
 增添了一些对于非法url的重定向
+
+
+## 2020/02/03——urkax
+
+前端：公告
+
 
 ## 2020/02/04——sxt
 
