@@ -3,7 +3,9 @@ import { withRouter, Link } from 'react-router-dom';
 import $ from 'jquery';
 import React, { Component } from 'react';
 import './detail.css';
-import { Button, Card  } from 'antd';
+import { message, Button, Card, Modal, Tag  } from 'antd';
+import Loading from '../loading.js'
+const { confirm } = Modal;
 
 
 class List extends Component{
@@ -13,31 +15,162 @@ class List extends Component{
 		let url = global.constants.server + 'api/team/' + this.props.match.params.teamID + '/';
 		$.get({
 			url: url,
+			crossDomain: true,
+			xhrFields: {
+                withCredentials: true
+            },
 			async: true,
 			success: function (result) {
-				this.setState({team: result})
+				if (result.result){
+					this.setState({team: result})
+				}else{
+					this.props.history.push('/');
+				}
 			}.bind(this)
 		})
 	}
 	componentWillMount(){
 		this.getTeamInfo();
 	}
+	quitTeam = () => {
+		let url = global.constants.server + 'api/team/quit/';
+		$.post({
+			url: url,
+			async: true,
+			crossDomain: true,
+			xhrFields: {
+                withCredentials: true
+            },
+			success: function (result) {
+				if (result.result){
+					message.success(result.message)
+				}else{
+					message.error(result.message)
+				}
+				if (result.result){
+					this.props.updateUser()
+				}
+			}.bind(this)
+		})
+	}
+	applyTeam = (id) => {
+		let url = global.constants.server + 'api/team/apply/' + id;
+		$.post({
+			url: url,
+			async: true,
+			crossDomain: true,
+			xhrFields: {
+                withCredentials: true
+            },
+			success: function (result) {
+				if (result.result){
+					message.success(result.message)
+				}else{
+					message.error(result.message)
+				}
+				if (result.result){
+					this.props.updateUser()
+				}
+			}.bind(this)
+		})
+	}
+	giveConfirm = (title, content, onOk) => {
+		confirm({
+			title: title,
+			content: content,
+			onOk: onOk,
+			onCancel() {},
+		});
+	}
 	render(){
 		if (this.state.team == null){
 			return (
-				<div  id = "root">
-					Loading...
-				</div>
+				<Loading/>
 			)
+		}
+		const { user } = this.props
+		const { teamID } = this.props.match.params
+		let inTeam = false
+		if (user){
+			if (user.team){
+				inTeam = user.team.id == this.state.team.id
+			}else{
+				inTeam = false
+			}
 		}
 		return (
 			<div  id = "root">
-				<div  id = "name">
+				<div  id = "team-name">
 					{this.state.team.name}
 				</div>
-				<div  id = "introduction">
-					{this.state.team.introduction}
-				</div>
+				<Card  id = "team-info">
+					<div  className = "info-item">
+						<div  className = "info-item-tip">
+							Introduction : 
+						</div>
+						<div  className = "info-item-content">
+							{this.state.team.introduction}
+						</div>
+					</div>
+					
+					<div  className = "info-item">
+						<div  className = "info-item-tip">
+							Caption : 
+						</div>
+						<div  className = "info-item-content">
+							<Tag  color = "cyan">{this.state.team.captain.username}</Tag>
+							
+						</div>
+					</div>
+					
+					<div  className = "info-item">
+						<div  className = "info-item-tip">
+							Members : 
+						</div>
+						<div  className = "info-item-content">
+							{this.state.team.members.map((item) => {return (
+								<Tag  color = "geekblue"  key = {item.id}>{item.username}</Tag>
+							)})}
+						</div>
+					</div>
+					<div  className = "team-info-opa">
+						{user != null &&(
+								inTeam == false ? (
+									<Button type='primary' size = 'large' onClick={() => this.giveConfirm(
+										'Apply confirm',
+										'Do you want to apply as a member of ' + this.state.team.name + '?' +
+										(user.team ? ('<br>It will give up your application of ' + user.team.name) : ''),
+										function(){this.applyTeam(this.state.team.id)}.bind(this)
+									)}>
+										Apply
+									</Button>
+								) : user.isCaptain ? (
+									<Button type='primary' size = 'large'>
+										<Link to='/team/manage'>
+											Manage
+										</Link>
+									</Button>
+								) : user.isMember ? (
+									<Button type='danger' size = 'large' onClick={() => this.giveConfirm(
+										'Quit confirm',
+										'Do you want to drop out of team ' + user.team.name + '?',
+										this.quitTeam
+									)}>
+										Quit
+									</Button>
+								) : (
+									<Button type='danger' size = 'large' onClick={() => this.giveConfirm(
+										'Cancel confirm',
+										'Do you want to cancel your application for team ' + user.team.name + '?',
+										this.quitTeam
+									)}>
+										Cancel
+									</Button>
+								)
+							)
+						}
+					</div>
+				</Card>
 			</div>
 		)
 	}

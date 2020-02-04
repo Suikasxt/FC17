@@ -48,4 +48,7 @@ urlpatterns = [
     path('api/team/list/', api_team.list),
     path('api/team/', api_team.detail),
     path('api/team/<int:teamID>/', api_team.detail),
+    path('api/team/quit/', api_team.quit),
+    path('api/team/apply/<int:teamID>', api_team.apply),
+    path('api/team/manage/', api_team.manage),
 ]

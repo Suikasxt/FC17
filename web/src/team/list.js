@@ -28,16 +28,21 @@ class List extends Component{
 				</div>
 			)
 		}
-		let teamList = this.state.list.map((item, index) => {
-			return (
-				<Card title={item.name} key={item.id} extra={<Link to={"/team/detail/" + item.id}><Button type="primary">Detail</Button></Link>} style={{ width: 300 }}>
-					<p>{item.introduction}</p>
-				</Card>
-			)
-		})
 		return (
 			<div  id = "root">
-				{teamList}
+				{
+					this.state.list.map((item, index) => {
+						return (
+							<Card title={item.name} key={item.id} extra={
+										<Link to={"/team/detail/" + item.id}>
+											<Button type="primary">Detail</Button>
+										</Link>
+									} style={{ width: 300 }}>
+								<p>{item.introduction}</p>
+							</Card>
+						)
+					})
+				}
 			</div>
 		)
 	}

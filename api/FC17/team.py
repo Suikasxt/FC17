@@ -74,12 +74,7 @@ def detail(request, teamID = None):
 					user.isMember = 0
 					user.save()
 				elif (user.isCaptain == 1 and request.POST.get('action') == 'Disband'):
-					user.team = None
-					Users.objects.filter(team = team).update(team = None, isMember = False)
-					team.delete()
-					user.isCaptain = False
-					user.isMember = False
-					user.save()
+					tools.disbandTeam(team)
 					return redirect("/team/")
 	else:
 		if (user == None):
