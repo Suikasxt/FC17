@@ -1,8 +1,8 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.shortcuts import redirect
-from FC17Website.models import Users
-from FC17Website.models import Teams
+from FC17Website.models import User
+from FC17Website.models import Team
 from FC17 import tools
 from FC17 import view
 import json
@@ -14,7 +14,7 @@ def manage(request):
 	if (user == None):
 		return view.alert(request, 'Please login!')
 	
-	user = Users.objects.get(id = user['id'])
+	user = User.objects.get(id = user['id'])
 	
 	if (user.isCaptain == False):
 		return view.alert(request, 'You are not a captain.')
@@ -23,12 +23,12 @@ def manage(request):
 	
 	#通过入队申请
 	if (request.POST and request.POST.get('accept')):
-		candidate = Users.objects.get(id = request.POST.get('accept'))
+		candidate = User.objects.get(id = request.POST.get('accept'))
 		if (candidate and candidate.team == user.team and candidate.isMember == False):
 			candidate.isMember = True
 			candidate.save()
 	
-	candidateList = Users.objects.filter(team = user.team, isMember = False)
+	candidateList = User.objects.filter(team = user.team, isMember = False)
 	context['candidateList'] = []
 	for candidate in candidateList:
 		context['candidateList'].append(json.loads(candidate.information))
@@ -56,12 +56,12 @@ def create(request):
 def detail(request, teamID = None):
 	user = request.session.get('User')
 	if (user != None):
-		user = Users.objects.get(id = user['id'])
+		user = User.objects.get(id = user['id'])
 	
 	
 	
 	if (teamID):
-		team = Teams.objects.get(id = teamID)
+		team = Team.objects.get(id = teamID)
 		if (team == None):
 			return view.alert("Team doesn't exist")
 		if (user and request.POST):
@@ -89,7 +89,7 @@ def detail(request, teamID = None):
 		
 	context = {'team' : team}
 	memberList = []
-	members = Users.objects.filter(team = team, isMember = True)
+	members = User.objects.filter(team = team, isMember = True)
 	
 	for member in members:
 		if member.isCaptain:
@@ -105,6 +105,6 @@ def detail(request, teamID = None):
 
 
 def list(request):
-	teamList = Teams.objects.all()
+	teamList = Team.objects.all()
 	context = {'teamList' : teamList}
 	return view.mainStyle(request, 'team/list.html', context)

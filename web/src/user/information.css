@@ -2,6 +2,7 @@
 #username{
 	font-weight: bolder;
 	font-size: 50px;
+	text-align: center;
 }
 #information{
 	margin: 120px;

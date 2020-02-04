@@ -20,6 +20,7 @@
 }
 .info-item-content{
 	font-weight: bold;
+	min-width: 300px;
 }
 .team-info-opa{
 	display: flex;

@@ -1,31 +1,31 @@
 import requests
 import json
-from FC17Website.models import Users
-from FC17Website.models import Teams
-from FC17Website.models import Notices
-from FC17Website.models import Comments
+from FC17Website.models import User
+from FC17Website.models import Team
+from FC17Website.models import Notice
+from FC17Website.models import Comment
 server = 'https://api.eesast.com'
 
 def submitComment(userID, content, notice):
 	if userID == None:
 		return False, "User doesn't exist!"
-	user = Users.objects.get(id = userID)
+	user = User.objects.get(id = userID)
 	if user == None:
 		return False, "User doesn't exist!"
 	
-	comment = Comments(user = user, content = content, notice = notice)
+	comment = Comment(user = user, content = content, notice = notice)
 	comment.save()
 	return True, "Submit successfully!"
 
 def createNotice(author, title, content):
 	if (author.adminLevel == 0):
 		return False, 'Your level is not enough!'
-	notice = Notices(author = author, title = title, content = content)
+	notice = Notice(author = author, title = title, content = content)
 	notice.save()
 	return True, "Create successfully!"
 
 def createTeam(userID, teamName = 'Unnamed', introduction = ''):
-	user = Users.objects.get(id = userID)
+	user = User.objects.get(id = userID)
 	if (user == None):
 		return False, 'System error!'
 		
@@ -38,7 +38,7 @@ def createTeam(userID, teamName = 'Unnamed', introduction = ''):
 	if (introduction == None):
 		introduction = ''
 	
-	team = Teams(name = teamName, introduction = introduction)
+	team = Team(name = teamName, introduction = introduction)
 	team.save()
 	user.team = team
 	user.isMember = True
@@ -49,7 +49,7 @@ def createTeam(userID, teamName = 'Unnamed', introduction = ''):
 def disbandTeam(team):
 	if (team == None):
 		return False, 'Team doesn\'t exist.'
-	Users.objects.filter(team = team).update(team = None, isMember = False, isCaptain = False)
+	User.objects.filter(team = team).update(team = None, isMember = False, isCaptain = False)
 	team.delete()
 	return True, 'Disband successfully.'
 
@@ -82,6 +82,6 @@ def getUserInfoPassword(username, ID, password):
 
 def getCurrentUser(request):
 	try:
-		return Users.objects.get(id = request.session.get('User')['id'])
+		return User.objects.get(id = request.session.get('User')['id'])
 	except:
 		return None

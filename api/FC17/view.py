@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.shortcuts import redirect
-from FC17Website.models import Users
+from FC17Website.models import User
 from FC17.api import user as api_user
 from FC17 import tools
 import json
@@ -11,7 +11,7 @@ import json
 def mainStyle(request, content = "home.html", context = {}):
 	user = request.session.get('User')
 	if (user != None):
-		user = Users.objects.get(id = user['id'])
+		user = User.objects.get(id = user['id'])
 		context['User'] = user
 		context['UserInformation'] = json.loads(user.information)
 	
@@ -27,9 +27,9 @@ def login(request):
 	
 	if (status_code == 200):
 		request.session['User'] = result
-		user = Users.objects.filter(id = result['id'])
+		user = User.objects.filter(id = result['id'])
 		if (len(user) == 0):
-			user = Users(id = result['id'])
+			user = User(id = result['id'])
 		else:
 			user = user[0]
 		user.information = json.dumps(result)

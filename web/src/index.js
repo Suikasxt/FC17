@@ -13,6 +13,7 @@ import TeamList from './team/list.js';
 import TeamDetail from './team/detail.js';
 import TeamManage from './team/manage.js';
 import Notice from './notice.js';
+import Leaderboard from './team/leaderboard.js';
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -157,9 +158,9 @@ class App extends React.Component {
 		return (
 			<Router>
 				<Layout style={{ minHeight: '100vh' }}>
-					<Sider collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse}>
+					<Sider collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse} theme="light">
 						<div className="logo" />
-						<Menu theme="dark" defaultSelectedKeys={['1']} mode="inline">
+						<Menu theme="light" defaultSelectedKeys={['1']} mode="inline">
 							<Menu.Item key="home">
 								<Link to="/">
 									<Icon type="pie-chart" />
@@ -174,10 +175,16 @@ class App extends React.Component {
 									<span>Notice</span>
 								</Link>
 							</Menu.Item>
+							<Menu.Item key="/leaderboard">
+								<Link to="/leaderboard">
+									<Icon type="trophy" />
+									<span>Leaderboard</span>
+								</Link>
+							</Menu.Item>
 						</Menu>
 					</Sider>
 					<Layout>
-						<Header style={{ background: '#fff', padding: 0}} >
+						<Header style={{ background: '#eee', padding: 0}} >
 							<h1 style={{ textAlign : 'center' }}>FC17</h1>
 						</Header>
 						<Content style={{ margin: '10px 16px' }}>
@@ -220,6 +227,7 @@ class App extends React.Component {
 									user={this.state.user}
 								/>}
 							/>
+							<Route path="/leaderboard" exact component={Leaderboard}/>
 						</Content>
 						<Footer style={{ textAlign: 'center' }}>FC17</Footer>
 					</Layout>

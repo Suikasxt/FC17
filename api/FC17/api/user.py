@@ -1,8 +1,8 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.shortcuts import redirect
-from FC17Website.models import Users
-from FC17Website.models import Teams
+from FC17Website.models import User
+from FC17Website.models import Team
 from FC17 import tools
 from FC17 import view
 import json
@@ -24,9 +24,9 @@ def login(request):
 		if (request.POST.get('remember') != 'true'):
 			request.session.set_expiry(0)
 		request.session['User'] = result
-		user = Users.objects.filter(id = result['id'])
+		user = User.objects.filter(id = result['id'])
 		if (len(user) == 0):
-			user = Users(id = result['id'])
+			user = User(id = result['id'])
 		else:
 			user = user[0]
 		user.information = json.dumps(result)
@@ -43,9 +43,9 @@ def detail(request, userID = -1):
 	res = {}
 	if (user != None):
 		if userID == -1:
-			user = Users.objects.get(id = user['id'])
+			user = User.objects.get(id = user['id'])
 		else:
-			user = Users.objects.get(id = userID)
+			user = User.objects.get(id = userID)
 		
 		res = json.loads(user.information)
 		del res['token']

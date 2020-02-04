@@ -45,7 +45,7 @@ class Notice extends Component{
           emptyText: (
             <Empty
               image={Empty.PRESENTED_IMAGE_SIMPLE}
-              description={"暂无公告"}
+              description={"None"}
             />
           )
         }}

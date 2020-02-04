@@ -47,10 +47,11 @@ urlpatterns = [
     path('api/user/logout/', api_user.logout),
     path('api/user/update/', api_user.update),
     path('api/team/list/', api_team.list),
+    path('api/team/leaderboard/<str:type>/', api_team.leaderboard),
     path('api/team/', api_team.detail),
     path('api/team/<int:teamID>/', api_team.detail),
-    path('api/notice/list/', api_notice.list),
     path('api/team/quit/', api_team.quit),
     path('api/team/apply/<int:teamID>', api_team.apply),
     path('api/team/manage/', api_team.manage),
+    path('api/notice/list/', api_notice.list),
 ]

@@ -1,19 +1,21 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.shortcuts import redirect
-from FC17Website.models import Users
-from FC17Website.models import Teams
+from FC17Website.models import User
+from FC17Website.models import Team
 from FC17 import tools
 from FC17 import view
 import json
 
 def list(request):
-	teamList = Teams.objects.all()
+	teamList = Team.objects.all()
 	result = []
 	for team in teamList:
 		result.append( {'id' : team.id, 'name' : team.name, 'introduction' : team.introduction} )
 	return HttpResponse(json.dumps(result), content_type = 'application/json')
-	
+
+
+
 def detail(request, teamID = -1):
 	user = tools.getCurrentUser(request)
 	if (teamID == -1):
@@ -23,14 +25,14 @@ def detail(request, teamID = -1):
 			team = user.team
 	else:
 		try:
-			team = Teams.objects.get(id = teamID)
+			team = Team.objects.get(id = teamID)
 		except:
 			team = None
 		
 	if (team == None):
 		return HttpResponse(json.dumps({'message': 'Team does\'t exist.', 'result': False}), content_type = 'application/json')
 		
-	members = Users.objects.filter(team = team, isMember = True)
+	members = User.objects.filter(team = team, isMember = True)
 	result = { 'id' : team.id, 'name' : team.name, 'introduction' : team.introduction }
 	memberList = []
 	for member in members:
@@ -44,11 +46,13 @@ def detail(request, teamID = -1):
 	result['captain'] = captain
 	
 	if (user and captain and user.id == captain['id']):
-		candidates = Users.objects.filter(team = team, isMember = False)
+		candidates = User.objects.filter(team = team, isMember = False)
 		result['candidates'] = [{'id': user.id, 'username': json.loads(user.information)['username']} for user in candidates]
 	result['result'] = True
 	
 	return HttpResponse(json.dumps(result), content_type = 'application/json')
+
+
 
 def quit(request):
 	user = tools.getCurrentUser(request)
@@ -74,9 +78,11 @@ def quit(request):
 		user.save()
 	return HttpResponse(json.dumps(result), content_type = 'application/json')
 
+
+
 def apply(request, teamID):
 	user = tools.getCurrentUser(request)
-	team = Teams.objects.get(id = teamID)
+	team = Team.objects.get(id = teamID)
 	result = {}
 	if (team == None):
 		result['message'] = 'Team does\'t exist.'
@@ -94,28 +100,34 @@ def apply(request, teamID):
 		user.save()
 	return HttpResponse(json.dumps(result), content_type = 'application/json')
 
+
+
 def manage(request):
 	user = tools.getCurrentUser(request)
 	result = {}
 	if (user and user.isCaptain):
 		team = user.team
 		if (request.POST.get('name')):
+			if len(request.POST['name']) > 30:
+				return HttpResponse(json.dumps({'message': 'The name is too long', 'result': False}), content_type = 'application/json')
 			team.name = request.POST['name']
 		if (request.POST.get('introduction')):
+			if len(request.POST['introduction']) > 250:
+				return HttpResponse(json.dumps({'message': 'The introduction is too long', 'result': False}), content_type = 'application/json')
 			team.introduction = request.POST['introduction']
 		team.save()
 		result['message'] = 'Update successfully'
 		
 		if (request.POST.get('accept')):
 			result['message'] = 'Accept successfully'
-			user = Users.objects.get(id = request.POST['accept'])
+			user = User.objects.get(id = request.POST['accept'])
 			if (user and user.team == team):
 				user.isMember = True
 				user.save()
 				
 		if (request.POST.get('dismiss')):
 			result['message'] = 'Dismiss successfully'
-			user = Users.objects.get(id = request.POST['dismiss'])
+			user = User.objects.get(id = request.POST['dismiss'])
 			if (user and user.team == team):
 				user.isMember = False
 				user.save()
@@ -131,4 +143,25 @@ def manage(request):
 		result['message'] = 'Please log in.'
 		result['result'] = False
 	
+	return HttpResponse(json.dumps(result), content_type = 'application/json')
+
+
+
+def leaderboard(request, type):
+	if type == 'total':
+		type = 'Total'
+	elif type == 'daily':
+		type = 'Daily'
+	else:
+		return HttpResponse("{}", content_type = 'application/json')
+		
+	teamList = Team.objects.order_by('-id', 'score' + type)
+	result = []
+	for index, team in enumerate(teamList):
+		score = 0
+		if (type == 'Total'):
+			score = team.scoreTotal
+		else:
+			score = team.scoreDaily
+		result.append( {'rank' : index + 1, 'id' : team.id, 'name' : team.name, 'introduction' : team.introduction, 'score' : score})
 	return HttpResponse(json.dumps(result), content_type = 'application/json')

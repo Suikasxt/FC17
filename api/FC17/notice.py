@@ -1,22 +1,22 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.shortcuts import redirect
-from FC17Website.models import Users
-from FC17Website.models import Notices
-from FC17Website.models import Comments
+from FC17Website.models import User
+from FC17Website.models import Notice
+from FC17Website.models import Comment
 from FC17 import tools
 from FC17 import view
 import json
 
 def list(request):
-	noticeList = Notices.objects.all()
+	noticeList = Notice.objects.all()
 	context = {'noticeList' : noticeList}
 	return view.mainStyle(request, 'notice/list.html', context)
 
 
 def detail(request, noticeID):
 	user = request.session.get('User')
-	notice = Notices.objects.get(id = noticeID)
+	notice = Notice.objects.get(id = noticeID)
 	
 	context = {'notice' : notice}
 	
@@ -29,7 +29,7 @@ def detail(request, noticeID):
 		context['tips'] = tips
 	
 	
-	commentList = Comments.objects.filter(notice = notice)
+	commentList = Comment.objects.filter(notice = notice)
 	commentListWithUser = []
 	for comment in commentList:
 		commentListWithUser.append({'comment' : comment, 'user' : json.loads(comment.user.information)})
@@ -42,7 +42,7 @@ def create(request):
 	if (user == None):
 		return view.alert(request, 'Please login!')
 	else:
-		user = Users.objects.get(id = user['id'])
+		user = User.objects.get(id = user['id'])
 		if (user == None or user.adminLevel == 0):
 			return view.alert(request, 'Your level is not enough!')
 	

@@ -1,4 +1,4 @@
-from FC17Website.models import Notices
+from FC17Website.models import Notice
 from django.http import HttpResponse
 import json
 import datetime
@@ -15,7 +15,7 @@ class DateEncoder(json.JSONEncoder):
             return json.JSONEncoder.default(self, obj)
 
 def list(request):
-    noticeList = Notices.objects.all()
+    noticeList = Notice.objects.all()
     result = []
     for n in noticeList:
         print(n.time)

@@ -2,7 +2,7 @@ import '../config';
 import { withRouter, Link } from 'react-router-dom';
 import $ from 'jquery';
 import React, { Component } from 'react';
-import { Form, Icon, Input, Button, Checkbox, Alert, Descriptions, Card  } from 'antd';
+import { Button, Card, Col, Row } from 'antd';
 
 
 class List extends Component{
@@ -29,20 +29,25 @@ class List extends Component{
 			)
 		}
 		return (
-			<div  id = "root">
+			<div  id = "root"  style = {{padding: 60}}>
+				<Row gutter={16}>
 				{
 					this.state.list.map((item, index) => {
 						return (
-							<Card title={item.name} key={item.id} extra={
-										<Link to={"/team/detail/" + item.id}>
-											<Button type="primary">Detail</Button>
-										</Link>
-									} style={{ width: 300 }}>
-								<p>{item.introduction}</p>
-							</Card>
+							<Col span={8}>
+								<Card title={item.name} key={item.id} extra={
+											<Link to={"/team/detail/" + item.id}>
+												<Button type="primary">Detail</Button>
+											</Link>
+										} style={{ width: 300 }}>
+									<p>{item.introduction}</p>
+								</Card>
+							</Col>
 						)
 					})
+					
 				}
+				</Row>
 			</div>
 		)
 	}

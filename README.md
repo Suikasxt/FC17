@@ -19,6 +19,13 @@
   + name、introduction（string）：直接修改队伍信息，若用户当前不属于任何队伍则创建新队伍
   + accept、dismiss（int）：通过某用户申请或踢出队内某用户
   + disband（boolean）：为true时解散队伍
++ api/team/leaderboard/{type}：type为total或daily，与api/team/list类似，但是会带上天梯分并且按指定天梯分排序
+
+
+
+
+
+
 
 
 ## 2020/01/26——sxt

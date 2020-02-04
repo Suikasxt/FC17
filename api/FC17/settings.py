@@ -30,6 +30,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+	'corsheaders',
 	'django.contrib.admin',
 	'django.contrib.auth',
 	'django.contrib.contenttypes',
@@ -130,11 +131,11 @@ STATIC_URL = '/static/'
 SESSION_COOKIE_SAMESITE = None
 CSRF_COOKIE_SAMESITE = None
 #CORS_ORIGIN_ALLOW_ALL=True
-CORS_ALLOW_CREDENTIALS = 'true'
-CORS_ORIGIN_WHITELIST = (
+CORS_ALLOW_CREDENTIALS = True
+CORS_ORIGIN_WHITELIST = [
     'http://localhost:3000',
     'http://127.0.0.1:3000'
-)
+]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'FC17', 'media/')

@@ -90,12 +90,12 @@ class List extends Component{
 		}
 		const { user } = this.props
 		const { teamID } = this.props.match.params
-		let inTeam = false
+		let inThisTeam = false
 		if (user){
 			if (user.team){
-				inTeam = user.team.id == this.state.team.id
+				inThisTeam = user.team.id == this.state.team.id
 			}else{
-				inTeam = false
+				inThisTeam = false
 			}
 		}
 		return (
@@ -135,15 +135,17 @@ class List extends Component{
 					</div>
 					<div  className = "team-info-opa">
 						{user != null &&(
-								inTeam == false ? (
-									<Button type='primary' size = 'large' onClick={() => this.giveConfirm(
-										'Apply confirm',
-										'Do you want to apply as a member of ' + this.state.team.name + '?' +
-										(user.team ? ('<br>It will give up your application of ' + user.team.name) : ''),
-										function(){this.applyTeam(this.state.team.id)}.bind(this)
-									)}>
-										Apply
-									</Button>
+								inThisTeam == false ? (
+									user.isMember == false &&(
+										<Button type='primary' size = 'large' onClick={() => this.giveConfirm(
+											'Apply confirm',
+											'Do you want to apply as a member of ' + this.state.team.name + '?' +
+											(user.team ? ('It will give up your application of ' + user.team.name) : ''),
+											function(){this.applyTeam(this.state.team.id)}.bind(this)
+										)}>
+											Apply
+										</Button>
+									)
 								) : user.isCaptain ? (
 									<Button type='primary' size = 'large'>
 										<Link to='/team/manage'>
