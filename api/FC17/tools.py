@@ -35,6 +35,9 @@ def createTeam(userID, teamName = 'Unnamed', introduction = ''):
 	if (teamName == ''):
 		return False, 'Teamname should not be empty.'
 	
+	if (introduction == None):
+		introduction = ''
+	
 	team = Teams(name = teamName, introduction = introduction)
 	team.save()
 	user.team = team
@@ -42,6 +45,13 @@ def createTeam(userID, teamName = 'Unnamed', introduction = ''):
 	user.isCaptain= True
 	user.save()
 	return True, 'Create successfully.'
+	
+def disbandTeam(team):
+	if (team == None):
+		return False, 'Team doesn\'t exist.'
+	Users.objects.filter(team = team).update(team = None, isMember = False, isCaptain = False)
+	team.delete()
+	return True, 'Disband successfully.'
 
 #根据token和ID获取
 def getUserInfoToken(token, ID):

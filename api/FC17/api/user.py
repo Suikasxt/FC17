@@ -31,9 +31,9 @@ def login(request):
 			user = user[0]
 		user.information = json.dumps(result)
 		user.save()
-		result = {'message' : 'Login successfully', 'result' : 1}
+		result = {'message' : 'Login successfully', 'result' : True}
 	else:
-		result = {'message' : result, 'result' : 0}
+		result = {'message' : result, 'result' : False}
 		
 	return HttpResponse(json.dumps(result), content_type = 'application/json')
 
@@ -64,7 +64,7 @@ def detail(request, userID = -1):
 def update(request):
 	user = tools.getCurrentUser(request)
 	if (user == None):
-		return HttpResponse(json.dumps('Please log in.'), content_type = 'application/json')
+		return HttpResponse(json.dumps({'message': 'Please log in.'}), content_type = 'application/json')
 		
 	changes = {}
 	return HttpResponse(json.dumps(changes), content_type = 'application/json')
@@ -72,8 +72,8 @@ def update(request):
 def logout(request):
 	try:
 		del request.session['User']
-		result = 'Logout successfully.'
+		result = {'message': 'Logout successfully.', 'result': True}
 	except:
-		result = 'Nothing'
+		result = {'message': 'Nothing', 'result': False}
 		
 	return HttpResponse(json.dumps(result), content_type = 'application/json')

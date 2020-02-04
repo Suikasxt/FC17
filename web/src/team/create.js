@@ -2,11 +2,11 @@ import '../config';
 import $ from 'jquery';
 import { withRouter, Link } from 'react-router-dom';
 import React, { Component } from 'react';
-import './login.css';
+import './create.css';
 import { message, Form, Icon, Input, Button, Checkbox, Card } from 'antd';
 
 
-class Login extends Component{
+class Create extends Component{
 	state = {
 	}
 	componentWillReceiveProps(nextProps){
@@ -96,4 +96,4 @@ class Login extends Component{
 	}
 }
 
-export default Form.create({ name: 'normal_login' })(Login);
+export default Form.create({ name: 'team_create' })(Create);

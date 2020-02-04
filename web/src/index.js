@@ -6,12 +6,13 @@ import 'antd/dist/antd.css';
 import './index.css';
 import $ from 'jquery';
 import { Layout, Menu, Breadcrumb, Icon } from 'antd';
-import Home from './home.js'
-import Login from './user/login.js'
-import Information from './user/information.js'
-import TeamList from './team/list.js'
-import TeamDetail from './team/detail.js'
-import Notice from './notice.js'
+import Home from './home.js';
+import Login from './user/login.js';
+import Information from './user/information.js';
+import TeamList from './team/list.js';
+import TeamDetail from './team/detail.js';
+import TeamManage from './team/manage.js';
+import Notice from './notice.js';
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -22,6 +23,7 @@ class App extends React.Component {
 	state = {
 		collapsed: false,
 		user: null,
+		userLoading: false,
 	}
 	
 	onCollapse = collapsed => {
@@ -29,12 +31,15 @@ class App extends React.Component {
 		this.setState({ collapsed });
 	}
 	
-	componentWillMount(){
-		this.tryLogin();
+	constructor(props){
+		super(props);
+	}
+	componentDidMount(){
+		this.updateUser();
 	}
 	
-	tryLogin = () => {
-		if (this.state.user != null) return;
+	updateUser = () => {
+		if (this.state.userLoading) return
 		let url = global.constants.server + 'api/user/';
 		this.loginRequest = $.get({
 			url: url,
@@ -42,11 +47,14 @@ class App extends React.Component {
 			xhrFields: {
                 withCredentials: true
             },
-			async: false,
+			async: true,
 			success: function (result) {
-				if (result.id){
-					this.setState({user : result});
+				if (result.id && result != this.state.user){
+					this.setState({user: result, userLoading: false});
 				}
+			}.bind(this),
+			beforeSend: function(){
+				this.setState({userLoading: true})
 			}.bind(this)
 		});
 	}
@@ -115,7 +123,7 @@ class App extends React.Component {
 						</Link>
 					</Menu.Item>
 					
-					{this.state.user.isMember ? (
+					{this.state.user.isMember && this.state.user.team != null ? (
 						<Menu.Item key="myTeam">
 							<Link to={"/team/detail/" + this.state.user.team.id}>
 								<span>{this.state.user.team.name}</span>
@@ -123,7 +131,7 @@ class App extends React.Component {
 						</Menu.Item>
 					) : (
 						<Menu.Item key="createTeam" >
-							<Link to="/team/list">
+							<Link to="/team/manage">
 								<span>Create Team</span>
 							</Link>
 						</Menu.Item>
@@ -183,16 +191,30 @@ class App extends React.Component {
 							<Route path="/login" render={props =>
 								<Login
 									unLogin={this.state.user == null}
-									tryLogin={this.tryLogin.bind(this)}
+									updateUser={this.updateUser.bind(this)}
 									{...props}
 								/>}
 							/>
 							<Route path="/team/list" exact render={props =>
 								<TeamList
 									user={this.state.user}
+									{...props}
 								/>}
 							/>
-							<Route path="/team/detail/:teamID" exact component={TeamDetail}/>
+							<Route path="/team/detail/:teamID" exact render={props =>
+								<TeamDetail
+									user={this.state.user}
+									updateUser={this.updateUser.bind(this)}
+									{...props}
+								/>}
+							/>
+							<Route path="/team/manage" exact render={props =>
+								<TeamManage
+									user={this.state.user}
+									updateUser={this.updateUser.bind(this)}
+									{...props}
+								/>}
+							/>
 							<Route path="/notice" exact render={props =>
 								<Notice
 									user={this.state.user}

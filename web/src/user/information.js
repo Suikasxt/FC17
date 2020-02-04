@@ -28,9 +28,10 @@ class Informathion extends Component{
 		}
 		return (
 			<div  id = "root">
-				<Descriptions  id = "information" title={user.username} bordered>
+				<Descriptions  id = "information" title=<div  id = 'username'>{user.username}</div> bordered>
 					<Descriptions.Item label={userTeam.tips}> {userTeam.content} </Descriptions.Item>
 					<Descriptions.Item label="Name"> {user.name} </Descriptions.Item>
+					<Descriptions.Item label="Username"> {user.username} </Descriptions.Item>
 					<Descriptions.Item label="Class"> {user.class} </Descriptions.Item>
 					<Descriptions.Item label="Department"> {user.department} </Descriptions.Item>
 					<Descriptions.Item label="ID"> {user.id} </Descriptions.Item>
