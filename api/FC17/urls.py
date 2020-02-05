@@ -24,6 +24,7 @@ from FC17 import notice
 from FC17.api import user as api_user
 from FC17.api import team as api_team
 from FC17.api import notice as api_notice
+from FC17.api import ai as api_ai
 
 urlpatterns = [
 	url(r'^media/(?P<path>.*)$', serve, {"document_root": settings.MEDIA_ROOT}),
@@ -54,4 +55,6 @@ urlpatterns = [
     path('api/team/apply/<int:teamID>', api_team.apply),
     path('api/team/manage/', api_team.manage),
     path('api/notice/list/', api_notice.list),
+    path('api/ai/upload/', api_ai.upload),
+    path('api/ai/list/', api_ai.list),
 ]

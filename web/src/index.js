@@ -14,6 +14,8 @@ import TeamDetail from './team/detail.js';
 import TeamManage from './team/manage.js';
 import Notice from './notice.js';
 import Leaderboard from './team/leaderboard.js';
+import AIList from './ai/list.js'
+import AIUpload from './ai/upload.js'
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -89,6 +91,11 @@ class App extends React.Component {
 				<Menu.Item key="information" >
 					<Link to="/information">
 						<span>Information</span>
+					</Link>
+				</Menu.Item>
+				<Menu.Item key="ai" >
+					<Link to="/ai/list">
+						<span>Ai files</span>
 					</Link>
 				</Menu.Item>
 				<Menu.Item key="logout" onClick={this.logout}>Log out</Menu.Item>
@@ -228,6 +235,18 @@ class App extends React.Component {
 								/>}
 							/>
 							<Route path="/leaderboard" exact component={Leaderboard}/>
+							<Route path="/ai/list" exact render={props =>
+								<AIList
+									user={this.state.user}
+									{...props}
+								/>}
+							/>
+							<Route path ="/ai/upload" exact render={props =>
+								<AIUpload
+									user={this.state.user}
+									{...props}
+								/>}
+							/>
 						</Content>
 						<Footer style={{ textAlign: 'center' }}>FC17</Footer>
 					</Layout>
