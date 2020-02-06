@@ -1,7 +1,7 @@
 import '../config';
 import $ from 'jquery';
 import React, { Component } from 'react';
-import { message, Form, Icon, Input, Button, Upload, Card } from 'antd';
+import { message, Form, Icon, Input, Button, Upload, Card, Layout } from 'antd';
 
 class AIUpload extends Component{
     state = {
@@ -15,9 +15,7 @@ class AIUpload extends Component{
 		}
 	}
 	componentWillMount(){
-		if (this.props.unLogin === false){
-			this.props.history.push('/');
-		}
+		
 	}
 
 	handleUploadData(file)
@@ -40,6 +38,11 @@ class AIUpload extends Component{
 		else if(file.size>1048576)
 		{
 			alert('Size of file should be less than 1MB!')
+			return false
+		}
+		else if(file.name.indexOf(' ') !==-1)
+		{
+			alert('The name of the file should not contain space.')
 			return false
 		}
 		else if(!file.name.endsWith(SUFFIX))
@@ -66,64 +69,82 @@ class AIUpload extends Component{
 	}
 
 	render(){
-		const props = {
-			name: 'file',
-			action: global.constants.server + 'api/ai/upload/',
-			showUploadList:false,
-			headers: {
-			  authorization: 'authorization-text',
-			},
-			beforeUpload:this.beforeUpload,
-			data:(file)=>this.handleUploadData(file),
-			withCredentials: true,
-			onChange:this.onChangefunc
-		  };
+		const { user } = this.props
+		if(!user)
+		{
+			this.props.history.push('/login/')
+			return(<div>login first</div>)
+		}
+		if(!user.team)
+		{
+			const div_style={'text-align': 'center', 'font-size':30}
+			return (
+				<Layout>
+					<Layout style={{ minHeight: '40vh'}}></Layout>
+					<div style={div_style}>Please join or create a team first.</div>
+				</Layout>
+			)
+		}
+		else{
+			const props = {
+				name: 'file',
+				action: global.constants.server + 'api/ai/upload/',
+				showUploadList:false,
+				headers: {
+				authorization: 'authorization-text',
+				},
+				beforeUpload:this.beforeUpload,
+				data:(file)=>this.handleUploadData(file),
+				withCredentials: true,
+				onChange:this.onChangefunc
+			};
 
-		const { getFieldDecorator } = this.props.form;
-		return (
-			<div  id = "root" style={{ minHeight: 500, alignItems : 'center', justifyContent: 'center', display : 'flex', flexDirection: 'column' }}>
-				<Card>
-					<Form onSubmit={this.handleSubmit} className="fileupload-form">
-						<Form.Item>
-							{getFieldDecorator('filename', {
-								rules: [{ required: true, message: 'Please input file name!' }],
-							})(
-								<Input
-									prefix={<Icon type="edit" style={{ color: 'rgba(0,0,0,.25)' }} />}
-									placeholder="file name"
-									onChange={(e)=>{this.setState({filename:e.target.value})}}
-								/>
-							)}
-						</Form.Item>
-						<Form.Item>
-							{getFieldDecorator('description', {
-								rules: [{ required: false}],
-							})(
-								<Input.TextArea
-                                    size='large'
-                                    placeholder="description"
-									default = ''
-									onChange={(e)=>{this.setState({description:e.target.value})}}
-								/>,
-							)}
-						</Form.Item>
-						<Form.Item>
-							{getFieldDecorator('file', {
-								rules: [{ required: true, message: 'Please choose a file!' }],
-							})(
-								<div>
-									<Upload {...props}>
-										<Button>
-										<Icon type='upload'/> Click to Upload
-										</Button>
-									</Upload>,
-								</div>
-							)}
-						</Form.Item>
-					</Form>
-				</Card>
-			</div>
-		)
+			const { getFieldDecorator } = this.props.form;
+			return (
+				<div  id = "root" style={{ minHeight: 500, alignItems : 'center', justifyContent: 'center', display : 'flex', flexDirection: 'column' }}>
+					<Card>
+						<Form onSubmit={this.handleSubmit} className="fileupload-form">
+							<Form.Item>
+								{getFieldDecorator('filename', {
+									rules: [{ required: true, message: 'Please input file name!' }],
+								})(
+									<Input
+										prefix={<Icon type="edit" style={{ color: 'rgba(0,0,0,.25)' }} />}
+										placeholder="file name"
+										onChange={(e)=>{this.setState({filename:e.target.value})}}
+									/>
+								)}
+							</Form.Item>
+							<Form.Item>
+								{getFieldDecorator('description', {
+									rules: [{ required: false}],
+								})(
+									<Input.TextArea
+										size='large'
+										placeholder="description"
+										default = ''
+										onChange={(e)=>{this.setState({description:e.target.value})}}
+									/>,
+								)}
+							</Form.Item>
+							<Form.Item>
+								{getFieldDecorator('file', {
+									rules: [{ required: true, message: 'Please choose a file!' }],
+								})(
+									<div>
+										<Upload {...props}>
+											<Button>
+											<Icon type='upload'/> Click to Upload
+											</Button>
+										</Upload>,
+									</div>
+								)}
+							</Form.Item>
+						</Form>
+					</Card>
+				</div>
+			)
+		}
 	}
 }
 

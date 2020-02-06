@@ -57,4 +57,5 @@ urlpatterns = [
     path('api/notice/list/', api_notice.list),
     path('api/ai/upload/', api_ai.upload),
     path('api/ai/list/', api_ai.list),
+    path('api/ai/delete/<int:pk>/', api_ai.delete),
 ]
