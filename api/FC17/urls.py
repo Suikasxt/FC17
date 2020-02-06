@@ -58,4 +58,7 @@ urlpatterns = [
     path('api/ai/upload/', api_ai.upload),
     path('api/ai/list/', api_ai.list),
     path('api/ai/delete/<int:pk>/', api_ai.delete),
+    path('api/ai/list_team/', api_ai.list_team),
+    path('api/ai/select/<int:pk>/', api_ai.select),
+    path('api/ai/download/<int:pk>/', api_ai.filedownload),
 ]

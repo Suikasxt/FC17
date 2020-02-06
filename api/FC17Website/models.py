@@ -44,6 +44,7 @@ def user_dirpath(instance, filename):
 class AI(models.Model):
 	filename = models.CharField(max_length = 255)
 	user = models.ForeignKey(to = User, on_delete = models.CASCADE, null = True)
+	team = models.ForeignKey(to = Team, on_delete = models.CASCADE, null = True)
 	description = models.CharField(max_length = 1000, null = True, blank = True, default = '')
 	file = models.FileField(upload_to = user_dirpath)
 	path = models.CharField(max_length = 500)

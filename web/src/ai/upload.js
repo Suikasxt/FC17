@@ -1,5 +1,4 @@
 import '../config';
-import $ from 'jquery';
 import React, { Component } from 'react';
 import { message, Form, Icon, Input, Button, Upload, Card, Layout } from 'antd';
 
@@ -35,9 +34,9 @@ class AIUpload extends Component{
 			alert('Please input file name!')
 			return false
 		}
-		else if(file.size>1048576)
+		else if(file.size>10485760)
 		{
-			alert('Size of file should be less than 1MB!')
+			alert('Size of file should be less than 10MB!')
 			return false
 		}
 		else if(file.name.indexOf(' ') !==-1)

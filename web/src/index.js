@@ -16,6 +16,8 @@ import Notice from './notice.js';
 import Leaderboard from './team/leaderboard.js';
 import AIList from './ai/list.js'
 import AIUpload from './ai/upload.js'
+import AIList_team from './ai/list_team.js'
+import File_download from './ai/file_download.js'
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -95,7 +97,7 @@ class App extends React.Component {
 				</Menu.Item>
 				<Menu.Item key="ai" >
 					<Link to="/ai/list">
-						<span>Ai files</span>
+						<span>AI files</span>
 					</Link>
 				</Menu.Item>
 				<Menu.Item key="logout" onClick={this.logout}>Log out</Menu.Item>
@@ -144,6 +146,13 @@ class App extends React.Component {
 							</Link>
 						</Menu.Item>
 					)}
+					{this.state.user.isMember && this.state.user.team != null ? (
+						<Menu.Item key="Ai list">
+							<Link to="/ai/list_team/">
+								<span>AI list</span>
+							</Link>
+						</Menu.Item>
+					):(<div></div>)}
 				</SubMenu>
 			)
 		}else{
@@ -243,6 +252,18 @@ class App extends React.Component {
 							/>
 							<Route path ="/ai/upload" exact render={props =>
 								<AIUpload
+									user={this.state.user}
+									{...props}
+								/>}
+							/>
+							<Route path ="/ai/list_team" exact render={props =>
+								<AIList_team
+									user={this.state.user}
+									{...props}
+								/>}
+							/>
+							<Route path ="/ai/file_download/:pk" exact render={props =>
+								<File_download
 									user={this.state.user}
 									{...props}
 								/>}

@@ -1,17 +1,19 @@
 import '../config';
-import {grommet,Grommet,Table,TableBody,TableHeader,TableRow,TableCell,Button,Text,Box} from 'grommet'
-import {Upload} from "grommet-icons"
+import {Grommet,Table,TableBody,TableHeader,TableRow,TableCell,Button,TableFooter,Text,Box,CheckBox} from 'grommet'
 import $ from 'jquery';
 import React, { Component } from 'react';
 import Loading from '../loading.js'
 import { message} from 'antd';
+import {Layout} from 'antd';
 
-class AIList extends Component{
+class AIList_team extends Component{
 	state = {
-		list:[]
+		list:[],
+		selected_id:-1,
 	}
+
 	getAIList = () => {
-		let url = global.constants.server + 'api/ai/list/';
+		let url = global.constants.server + 'api/ai/list_team/';
 		this.AIListRequest = $.get({
 			url: url,
 			crossDomain: true,
@@ -19,71 +21,81 @@ class AIList extends Component{
                 withCredentials: true
             },
 			success: function (result) {
-				if(result.result)
-				{
+				if(result.result){
 					this.setState({list : result.data});
 					console.log(this.state.list)
 				}
-				else
-				{
+				else{
 					message.error('Can not get AI list!')
 				}
 				
 			}.bind(this)
 		})
 	}
-	componentWillMount(){
-		this.getAIList();
-    }
-	
-	dowload_request = (pk) => {
-		this.props.history.push("/ai/file_download/"+pk+'/');
-	}
 
-	upload_redirect = (event) => {
-		this.props.history.push("/ai/upload");
-	  }
-
-	delete_file = (datum)=>{
-		let url = global.constants.server + 'api/ai/delete/'+datum['ai id']+'/';
-		this.AIdeleteRequest = $.get({
+	submit_selection = () => {
+		if(this.state.selected_id===-1){
+			message.error('Please select a file.')
+			return
+		}
+		
+		let url = global.constants.server + 'api/ai/select/'+this.state.selected_id+'/';
+		this.AIListRequest = $.get({
 			url: url,
 			crossDomain: true,
 			xhrFields: {
                 withCredentials: true
             },
 			success: function (result) {
-				if(result.result)
-				{
-					var newList = new Array();
-					var i=0;
-					for(i=0;i<this.state.list.length;i++)
-					{
-						if(this.state.list[i]['ai id'] !== datum['ai id'])
-						{
-							newList.push(this.state.list[i])
-						}
-					}
-
-					this.setState({list : newList});
-					console.log(this.state.list)
-					message.success(`${datum['filename']} file deleted successfully`);
+				if(result.result){
+					message.success('Select file successfully!')
 				}
-				else
-				{
-					message.error(result.message)
+				else{
+					message.error('Selection failed.')
 				}
 				
 			}.bind(this)
 		})
 	}
-	
+
+	dowload_request = (pk) => {
+		this.props.history.push("/ai/file_download/"+pk+'/');
+	}
+
+	componentWillMount(){
+		this.getAIList();
+    }
+    
+    select_change = (checked, datum) => {
+        var i=0;
+        var newList = this.state.list;
+        datum.selected = checked;
+        for(i=0;i<this.state.list.length;i++){
+            if(this.state.list[i]['ai id'] === datum['ai id']){
+                newList[i]=datum;
+			}
+			else if(checked===true)
+			{
+				newList[i].selected=false;
+			}
+		}
+		this.setState({list:newList})
+
+		if(checked===true){
+			this.setState({selected_id:datum['ai id']})
+		}
+		else{
+			this.setState({selected_id:-1})
+		}
+		
+    }
+
 	table_item = (c,datum) =>{
-		if(c.property==='deleteButton')
+		if(c.property==='selected')
 		{
 			return(
 				<TableCell key={c.property} scope={c.dataScope} align={c.align}>
-				<Button primary color="#111111" label = 'Delete' onClick={()=>this.delete_file(datum)}/>
+				<CheckBox disabled={!this.props.user.isCaptain} checked={datum.selected} onChange={(event)=>this.select_change(event.target.checked,datum)}/>
 				</TableCell>
 			)
 		}
@@ -91,7 +103,7 @@ class AIList extends Component{
 		{
 			return(
 				<TableCell key={c.property} scope={c.dataScope} align={c.align}>
-				<Button primary label='Download' onClick={()=>this.dowload_request(datum['ai id'])}/>
+				<Button label='Download' onClick={()=>this.dowload_request(datum['ai id'])}/>
 				</TableCell>
 			)
 		}
@@ -104,8 +116,37 @@ class AIList extends Component{
 				)
 		}
 	}
+
+	table_foot = (c) => {
+		if(c.property==='selected'){
+			return(
+				<TableCell key={c.property} scope={c.dataScope} align={c.align}>
+					<Button disabled={!this.props.user.isCaptain} label="Submit" onClick={this.submit_selection} />
+				</TableCell>
+				)
+		}
+		else{
+			return(<TableCell key={c.property} scope={c.dataScope} align={c.align}/>)
+		}
+	}
 	
 	render(){
+		const { user } = this.props
+		if(!user)
+		{
+			return(<div>login first</div>)
+		}
+		if(!user.team)
+		{
+			const div_style={'text-align': 'center', 'font-size':30}
+			return (
+				<Layout>
+					<Layout style={{ minHeight: '40vh'}}></Layout>
+					<div style={div_style}>Please join or create a team first.</div>
+				</Layout>
+			)
+		}
+
 		if (this.state.list == null){
 			return (
 				<Loading></Loading>
@@ -146,12 +187,12 @@ class AIList extends Component{
 		  };
 
 		const columns = [
-			//{property:'username',align:'center',label:'user name'},
+			{property:'username',align:'center',label:'user name'},
 			{property:'filename',align:'center',label:'file name'},
 			{property:'description',align:'center',label:'description'},
 			{property:'upload time',align:'center',label:'upload time'},
 			{property:'download',align:'center',label:'download'},
-			{property:'deleteButton',align:'center',label:'delete'},
+            {property:'selected',align:'center',label:'selected'},
 		]
 
         return(
@@ -175,12 +216,14 @@ class AIList extends Component{
 							</TableRow>
 						))}
 						</TableBody>
+						<TableFooter>
+						<TableRow>
+							{columns.map(this.table_foot)}
+						</TableRow>
+						</TableFooter>
 					</Table>
 				</Grommet>
 				</Box>
-			<Button icon={<Upload/>}
-			history={this.props.history}
-			label="Upload" onClick={this.upload_redirect}></Button>
 			</div>
 			)
             
@@ -188,4 +231,4 @@ class AIList extends Component{
         
 };
 
-export default AIList;
+export default AIList_team;
