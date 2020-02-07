@@ -4,6 +4,7 @@ import $ from 'jquery';
 import moment from "moment";
 import marked from "marked";
 import React, { Component } from 'react';
+import Loading from './loading.js'
 const { Panel } = Collapse;
 
 class Notice extends Component{
@@ -27,16 +28,14 @@ class Notice extends Component{
 	render(){
 		if (this.state.list == null){
 			return (
-				<div  id = "root">
-					Loading...
-				</div>
+				<Loading/>
 			)
         }
         
         const style_con={
             padding: '0',
             width: '100%',
-            'text-align': 'left'
+            'textAlign': 'left'
         };
 
 		let teamList = <List

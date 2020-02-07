@@ -1,15 +1,13 @@
 import './config';
-import { withRouter, Link } from 'react-router-dom';
-import $ from 'jquery';
 import React, { Component } from 'react';
-import { message, Button, Card, Modal  } from 'antd';
+import { Spin  } from 'antd';
 
 
 class Loading extends Component{
 	render(){
 		return (
-			<div  id = "root">
-				Loading...
+			<div  id = "root"  style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+				<Spin  tip = "Loading..."  size = "large"></Spin>
 			</div>
 		)
 	}

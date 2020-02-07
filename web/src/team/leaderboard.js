@@ -1,8 +1,8 @@
 import '../config';
-import { withRouter, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import $ from 'jquery';
 import React, { Component } from 'react';
-import { Table, Divider, Tabs } from 'antd';
+import { Table, Tabs } from 'antd';
 const { TabPane } = Tabs;
 
 const columns = [
@@ -23,14 +23,14 @@ const columns = [
 		key: 'introduction',
 	},
 	{
-		title: 'score',
+		title: 'Score',
 		dataIndex: 'score',
 		key: 'score',
 	},
 	{
 		title: 'AI',
-		dataIndex: 'AI',
-		key: 'AI',
+		dataIndex: 'ai',
+		key: 'ai',
 		render: (text, record) => (
 			<span>
 				{record.ai?(
@@ -53,6 +53,9 @@ class Leaderboard extends Component{
 		this.teamListRequest = $.get({
 			url: url,
 			success: function (result) {
+				for(let index in result) {
+					result[index].key = index.toString();
+				}
 				this.setState({total : result});
 			}.bind(this)
 		})
@@ -60,6 +63,9 @@ class Leaderboard extends Component{
 		this.teamListRequest = $.get({
 			url: url,
 			success: function (result) {
+				for(let index in result) {
+					result[index].key = index.toString();
+				}
 				this.setState({daily : result});
 			}.bind(this)
 		})

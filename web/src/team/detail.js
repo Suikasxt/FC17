@@ -1,5 +1,5 @@
 import '../config';
-import { withRouter, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import $ from 'jquery';
 import React, { Component } from 'react';
 import './detail.css';
@@ -83,7 +83,7 @@ class List extends Component{
 		});
 	}
 	render(){
-		if (this.state.team == null){
+		if (this.state.team === null){
 			return (
 				<Loading/>
 			)
@@ -93,7 +93,7 @@ class List extends Component{
 		let inThisTeam = false
 		if (user){
 			if (user.team){
-				inThisTeam = user.team.id == this.state.team.id
+				inThisTeam = user.team.id === this.state.team.id
 			}else{
 				inThisTeam = false
 			}
@@ -135,8 +135,8 @@ class List extends Component{
 					</div>
 					<div  className = "team-info-opa">
 						{user != null &&(
-								inThisTeam == false ? (
-									user.isMember == false &&(
+								inThisTeam === false ? (
+									user.isMember === false &&(
 										<Button type='primary' size = 'large' onClick={() => this.giveConfirm(
 											'Apply confirm',
 											'Do you want to apply as a member of ' + this.state.team.name + '?' +

@@ -1,9 +1,8 @@
 import '../config';
-import { withRouter, Link } from 'react-router-dom';
-import $ from 'jquery';
+import { Link } from 'react-router-dom';
 import React, { Component } from 'react';
 import './information.css';
-import { Form, Icon, Input, Button, Checkbox, Alert, Descriptions  } from 'antd';
+import { Descriptions  } from 'antd';
 
 
 class Informathion extends Component{

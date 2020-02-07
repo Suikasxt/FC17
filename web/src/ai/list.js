@@ -1,5 +1,5 @@
 import '../config';
-import {grommet,Grommet,Table,TableBody,TableHeader,TableRow,TableCell,Button,Text,Box} from 'grommet'
+import {Grommet,Table,TableBody,TableHeader,TableRow,TableCell,Button,Text,Box} from 'grommet'
 import {Upload} from "grommet-icons"
 import $ from 'jquery';
 import React, { Component } from 'react';

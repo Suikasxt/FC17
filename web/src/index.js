@@ -1,9 +1,9 @@
 import './config';
-import React, { Component } from 'react';
+import React from 'react';
 import { HashRouter as Router, Link, Route } from 'react-router-dom';
 import ReactDOM from 'react-dom';
 import 'antd/dist/antd.css';
-import style from './index.css';
+import './index.css';
 import $ from 'jquery';
 import { Layout, Menu, Typography, Icon } from 'antd';
 import Home from './home.js';
@@ -37,9 +37,6 @@ class App extends React.Component {
 		this.setState({ collapsed });
 	}
 	
-	constructor(props){
-		super(props);
-	}
 	componentDidMount(){
 		this.updateUser();
 	}
@@ -55,7 +52,7 @@ class App extends React.Component {
             },
 			async: true,
 			success: function (result) {
-				if (result.id && result != this.state.user){
+				if (result.id && result !== this.state.user){
 					this.setState({user: result, userLoading: false});
 				}
 			}.bind(this),

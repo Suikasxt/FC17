@@ -1,8 +1,7 @@
 import '../config';
-import { withRouter, Link } from 'react-router-dom';
 import $ from 'jquery';
 import React, { Component } from 'react';
-import { Form, Icon, Input, Button, Checkbox, Alert, Card, Modal, Empty, message, Divider } from 'antd';
+import { Form, Icon, Input, Button, Card, Modal, Empty, message } from 'antd';
 import Loading from '../loading.js'
 import './manage.css'
 const { confirm } = Modal;
@@ -87,7 +86,7 @@ class Manage extends Component{
 	}
 
 	render(){
-		if (this.state.team == null){
+		if (this.state.team === null){
 			return (
 				<Loading />
 			)
@@ -156,7 +155,7 @@ class Manage extends Component{
 				{this.state.team.name &&(
 					<div>
 						<Card  title = "Members">
-							{this.state.team.members.length == 0 && (
+							{this.state.team.members.length === 0 && (
 								<Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description='None'/>
 							)}
 							{
@@ -178,7 +177,7 @@ class Manage extends Component{
 						</Card>
 						
 						<Card  title = "Applications">
-							{this.state.team.candidates.length == 0 && (
+							{this.state.team.candidates.length === 0 && (
 								<Empty image={Empty.PRESENTED_IMAGE_SIMPLE} description='None'/>
 							)}
 							{

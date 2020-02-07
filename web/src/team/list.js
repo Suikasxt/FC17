@@ -1,7 +1,8 @@
 import '../config';
-import { withRouter, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import $ from 'jquery';
 import React, { Component } from 'react';
+import Loading from '../loading.js'
 import { Button, Card, Col, Row } from 'antd';
 
 
@@ -23,9 +24,7 @@ class List extends Component{
 	render(){
 		if (this.state.list == null){
 			return (
-				<div  id = "root">
-					Loading...
-				</div>
+				<Loading/>
 			)
 		}
 		return (
