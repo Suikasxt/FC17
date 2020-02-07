@@ -27,6 +27,12 @@ const columns = [
 		dataIndex: 'score',
 		key: 'score',
 	},
+	{
+		title: 'AI',
+		dataIndex: 'AI',
+		key: 'AI',
+		render: (text, record) => <a href={global.constants.server + record.ai}>Download</a>,
+	},
 ];
 
 class Leaderboard extends Component{
