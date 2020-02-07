@@ -163,5 +163,9 @@ def leaderboard(request, type):
 			score = team.scoreTotal
 		else:
 			score = team.scoreDaily
-		result.append( {'rank' : index + 1, 'id' : team.id, 'name' : team.name, 'introduction' : team.introduction, 'score' : score, 'ai': 'media/' + str(team.releaseAI)})
+		teamInfo = {'rank' : index + 1, 'id' : team.id, 'name' : team.name, 'introduction' : team.introduction, 'score' : score}
+		if (team.releaseAI):
+			teamInfo['ai'] = 'media/' + str(team.releaseAI)
+		result.append(teamInfo)
+		
 	return HttpResponse(json.dumps(result), content_type = 'application/json')

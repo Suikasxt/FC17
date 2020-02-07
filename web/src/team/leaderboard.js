@@ -31,7 +31,15 @@ const columns = [
 		title: 'AI',
 		dataIndex: 'AI',
 		key: 'AI',
-		render: (text, record) => <a href={global.constants.server + record.ai}>Download</a>,
+		render: (text, record) => (
+			<span>
+				{record.ai?(
+					<a href={global.constants.server + record.ai}>Download</a>
+				) : (
+					<span>None</span>
+				)}
+			</span>
+		)
 	},
 ];
 
