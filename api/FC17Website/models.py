@@ -6,9 +6,7 @@ import time
 class Team(models.Model):
 	name = models.CharField(max_length = 31, default = '')
 	introduction = models.CharField(max_length = 255, default = '')
-	scoreTotal = models.IntegerField(default = 0)
-	scoreDaily = models.IntegerField(default = 0)
-	releaseAI = models.FileField(null = True, upload_to = 'release/')
+	score = models.IntegerField(default = 0)
 
 class User(models.Model):
 	id = models.IntegerField(primary_key=True)

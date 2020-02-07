@@ -3,6 +3,7 @@ from FC17Website.models import User,AI
 from FC17 import tools
 from FC17.api.notice import DateEncoder
 from FC17.settings import BASE_DIR
+import re
 import os
 import time
 import json
@@ -169,3 +170,15 @@ def filedownload(request ,pk):
             response['Content-Type'] = 'application/octet-stream'
             response['Content-Disposition'] = 'attachment;filename="{0}"'.format(file[0].origin_name)
     return response
+
+def leaderboard(request):
+	aiList = AI.objects.order_by('-id', 'score')
+	result = []
+	for index, ai in enumerate(aiList):
+		aiInfo = {'rank' : index + 1, 'id' : ai.id, 'filename' : ai.filename, 'description' : ai.description, 'score' : ai.score, 'teamName': ai.team.name}
+		dllPath = 'media/' + re.sub(r'\.[^\.]*$', ".dll", str(ai.file))
+		if os.path.exists('FC17/' + dllPath):
+			aiInfo['dll'] = dllPath
+		result.append(aiInfo)
+		
+	return HttpResponse(json.dumps(result), content_type = 'application/json')

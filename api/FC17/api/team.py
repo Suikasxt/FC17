@@ -147,25 +147,12 @@ def manage(request):
 
 
 
-def leaderboard(request, type):
-	if type == 'total':
-		type = 'Total'
-	elif type == 'daily':
-		type = 'Daily'
-	else:
-		return HttpResponse("{}", content_type = 'application/json')
-		
-	teamList = Team.objects.order_by('-id', 'score' + type)
+def leaderboard(request):
+	teamList = Team.objects.order_by('-id', 'score')
 	result = []
 	for index, team in enumerate(teamList):
-		score = 0
-		if (type == 'Total'):
-			score = team.scoreTotal
-		else:
-			score = team.scoreDaily
+		score = team.score
 		teamInfo = {'rank' : index + 1, 'id' : team.id, 'name' : team.name, 'introduction' : team.introduction, 'score' : score}
-		if (team.releaseAI):
-			teamInfo['ai'] = 'media/' + str(team.releaseAI)
 		result.append(teamInfo)
 		
 	return HttpResponse(json.dumps(result), content_type = 'application/json')

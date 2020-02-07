@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import { Table, Tabs } from 'antd';
 const { TabPane } = Tabs;
 
-const columns = [
+const columnsTotal = [
 	{
 		title: 'Rank',
 		dataIndex: 'rank',
@@ -27,14 +27,37 @@ const columns = [
 		dataIndex: 'score',
 		key: 'score',
 	},
+];
+const columnsDaily = [
 	{
-		title: 'AI',
-		dataIndex: 'ai',
-		key: 'ai',
+		title: 'Rank',
+		dataIndex: 'rank',
+		key: 'rank',
+	},
+	{
+		title: 'Filename',
+		dataIndex: 'filename',
+		key: 'filename',
+		render: (text, record) => <Link to={"team/detail/" + record.id}>{text}</Link>,
+	},
+	{
+		title: 'Description',
+		dataIndex: 'description',
+		key: 'description',
+	},
+	{
+		title: 'Score',
+		dataIndex: 'score',
+		key: 'score',
+	},
+	{
+		title: 'Dll',
+		dataIndex: 'dll',
+		key: 'dll',
 		render: (text, record) => (
 			<span>
-				{record.ai?(
-					<a href={global.constants.server + record.ai}>Download</a>
+				{text?(
+					<a href={global.constants.server + text}>Download</a>
 				) : (
 					<span>None</span>
 				)}
@@ -49,7 +72,7 @@ class Leaderboard extends Component{
 		daily : [],
 	}
 	getTeamList = () => {
-		let url = global.constants.server + 'api/team/leaderboard/total';
+		let url = global.constants.server + 'api/leaderboard/total';
 		this.teamListRequest = $.get({
 			url: url,
 			success: function (result) {
@@ -59,7 +82,7 @@ class Leaderboard extends Component{
 				this.setState({total : result});
 			}.bind(this)
 		})
-		url = global.constants.server + 'api/team/leaderboard/daily';
+		url = global.constants.server + 'api/leaderboard/daily';
 		this.teamListRequest = $.get({
 			url: url,
 			success: function (result) {
@@ -78,10 +101,10 @@ class Leaderboard extends Component{
 			<div  id = "root">
 				<Tabs defaultActiveKey="1">
 					<TabPane tab="Total" key="total">
-						<Table columns={columns} dataSource={this.state.total} />
+						<Table columns={columnsTotal} dataSource={this.state.total} />
 					</TabPane>
 					<TabPane tab="Daily" key="daily">
-						<Table columns={columns} dataSource={this.state.daily} />
+						<Table columns={columnsDaily} dataSource={this.state.daily} />
 					</TabPane>
 				</Tabs>
 			</div>
