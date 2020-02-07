@@ -3,9 +3,9 @@ import React, { Component } from 'react';
 import { HashRouter as Router, Link, Route } from 'react-router-dom';
 import ReactDOM from 'react-dom';
 import 'antd/dist/antd.css';
-import './index.css';
+import style from './index.css';
 import $ from 'jquery';
-import { Layout, Menu, Breadcrumb, Icon } from 'antd';
+import { Layout, Menu, Typography, Icon } from 'antd';
 import Home from './home.js';
 import Login from './user/login.js';
 import Information from './user/information.js';
@@ -18,10 +18,11 @@ import AIList from './ai/list.js'
 import AIUpload from './ai/upload.js'
 import AIList_team from './ai/list_team.js'
 import File_download from './ai/file_download.js'
+import ASTA_logo from './assets/ASTA_logo.jpg'
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
-
+const { Title } = Typography;
 
 
 class App extends React.Component {
@@ -175,7 +176,12 @@ class App extends React.Component {
 			<Router>
 				<Layout style={{ minHeight: '100vh' }}>
 					<Sider collapsible collapsed={this.state.collapsed} onCollapse={this.onCollapse} theme="light">
-						<div className="logo" />
+						<div className="logo">
+						<img className="logo_img" src={ASTA_logo} alt="logo" />
+							<Title style={{ margin: "auto", marginLeft: 10 }} level={3}>
+							ASTA
+							</Title>
+						</div>
 						<Menu theme="light" defaultSelectedKeys={['1']} mode="inline">
 							<Menu.Item key="home">
 								<Link to="/">
@@ -200,7 +206,7 @@ class App extends React.Component {
 						</Menu>
 					</Sider>
 					<Layout>
-						<Header style={{ background: '#eee', padding: 0}} >
+						<Header style={{ background: 'white', padding: 0}} >
 							<h1 style={{ textAlign : 'center' }}>FC17</h1>
 						</Header>
 						<Content style={{ margin: '10px 16px' }}>
@@ -269,7 +275,7 @@ class App extends React.Component {
 								/>}
 							/>
 						</Content>
-						<Footer style={{ textAlign: 'center' }}>FC17</Footer>
+						<Footer style={{ textAlign: 'center' }}>&copy; FC17, DAASTA, 2020</Footer>
 					</Layout>
 				</Layout>
 			</Router>
