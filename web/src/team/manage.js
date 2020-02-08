@@ -86,7 +86,7 @@ class Manage extends Component{
 	}
 
 	render(){
-		if (this.state.team === null){
+		if (this.state.team == null){
 			return (
 				<Loading />
 			)

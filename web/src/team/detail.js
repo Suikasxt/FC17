@@ -83,7 +83,7 @@ class List extends Component{
 		});
 	}
 	render(){
-		if (this.state.team === null){
+		if (this.state.team == null){
 			return (
 				<Loading/>
 			)
