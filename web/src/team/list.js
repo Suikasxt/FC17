@@ -33,7 +33,7 @@ class List extends Component{
 				{
 					this.state.list.map((item, index) => {
 						return (
-							<Col span={8}>
+							<Col span={8} key={item.id}>
 								<Card title={item.name} key={item.id} extra={
 											<Link to={"/team/detail/" + item.id}>
 												<Button type="primary">Detail</Button>

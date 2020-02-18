@@ -11,8 +11,8 @@ const { confirm } = Modal;
 class List extends Component{
 	state = {
 	}
-	getTeamInfo = () => {
-		let url = global.constants.server + 'api/team/' + this.props.match.params.teamID + '/';
+	getTeamInfo = (teamID = this.props.match.params.teamID) => {
+		let url = global.constants.server + 'api/team/' + teamID + '/';
 		$.get({
 			url: url,
 			crossDomain: true,
@@ -31,6 +31,9 @@ class List extends Component{
 	}
 	componentWillMount(){
 		this.getTeamInfo();
+	}
+	componentWillReceiveProps(nextProps){
+		this.getTeamInfo(nextProps.match.params.teamID);
 	}
 	quitTeam = () => {
 		let url = global.constants.server + 'api/team/quit/';
