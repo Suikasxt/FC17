@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom';
 import 'antd/dist/antd.css';
 import './index.css';
 import $ from 'jquery';
-import { Layout, Menu, Typography, Icon } from 'antd';
+import { Layout, Menu, Typography, Icon, Button } from 'antd';
 import Home from './home.js';
 import Login from './user/login.js';
 import Information from './user/information.js';
@@ -23,6 +23,7 @@ import ASTA_logo from './assets/ASTA_logo.jpg'
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 const { Title } = Typography;
+const Tips = "目前为fc17的内测阶段，只提供选手包供选手们下载进行测试，开启正式报名后提供组队报名及其他相关功能"
 
 
 class App extends React.Component {
@@ -41,6 +42,11 @@ class App extends React.Component {
 		this.updateUser();
 	}
 	
+	download = (url) => {
+		let a = document.createElement('a');
+		a.href = url;
+		a.click();
+    };
 	updateUser = () => {
 		if (this.state.userLoading) return
 		let url = global.constants.server + 'api/user/';
@@ -203,8 +209,14 @@ class App extends React.Component {
 						</Menu>
 					</Sider>
 					<Layout>
-						<Header style={{ background: 'white', padding: 0}} >
-							<h1 style={{ textAlign : 'center' }}>FC17</h1>
+						<Header style={{ background: 'white', padding: 0, display: 'flex', flexDirection: 'row'}} >
+							<div style={{ flex: 1 }}>
+								<div style={{ flex: 2, fontSize: 25, fontWeight: 'bolder'}}>2020年自动化系新生C语言大赛</div>
+								<div>{Tips}</div>
+							</div>
+							<div>
+								<Button type="primary" onClick={(e) => this.download(global.constants.server + 'media/FC17_UserPackage1.2.rar')}>选手包下载</Button>
+							</div>
 						</Header>
 						<Content style={{ margin: '10px 16px' }}>
 							<Route path="/" exact component={Home}/>
@@ -214,7 +226,14 @@ class App extends React.Component {
 									{...props} 
 								/>}
 							/>
-							<Route path="/login" render={props =>
+							<Route path="/login" exact render={props =>
+								<Login
+									unLogin={this.state.user == null}
+									updateUser={this.updateUser.bind(this)}
+									{...props}
+								/>}
+							/>
+							<Route path="/login/:token" exact render={props =>
 								<Login
 									unLogin={this.state.user == null}
 									updateUser={this.updateUser.bind(this)}

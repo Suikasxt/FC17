@@ -20,10 +20,10 @@ def mainStyle(request, content = "home.html", context = {}):
 def login(request):
 	status_code = 0
 	#如果从token和ID成功得到了用户信息，就记录进session
-	if (request.POST and request.POST.get('token') and request.POST.get('ID')):
-		result, status_code = tools.getUserInfoToken(request.POST['token'], request.POST['ID'])
-	elif (request.POST and request.POST.get('username') and request.POST.get('ID') and request.POST.get('password')):
-		result, status_code = tools.getUserInfoPassword(request.POST['username'], request.POST['ID'], request.POST['password'])
+	if (request.POST and request.POST.get('token')):
+		result, status_code = tools.getUserInfoToken(request.POST['token'])
+	elif (request.POST and request.POST.get('username') and request.POST.get('password')):
+		result, status_code = tools.getUserInfoPassword(request.POST['username'], request.POST['password'])
 	
 	if (status_code == 200):
 		request.session['User'] = result

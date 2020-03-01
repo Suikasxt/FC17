@@ -18,6 +18,24 @@ class Login extends Component{
 		if (this.props.unLogin === false){
 			this.props.history.push('/');
 		}
+		if (this.props.match.params.token != null){
+			let url = global.constants.server + 'api/user/login/';
+			this.serverRequest = $.post({
+				url: url,
+				data: {token: this.props.match.params.token},
+				crossDomain: true,
+				xhrFields: {
+					withCredentials: true
+				},
+				success: function (result) {
+					if (result.result){
+						this.props.updateUser(result)
+					}else{
+						message.error(result.message)
+					}
+				}.bind(this)
+			});
+		}
 	}
 	handleSubmit = (e) => {
 		e.preventDefault();
@@ -56,16 +74,6 @@ class Login extends Component{
 								<Input
 									prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
 									placeholder="Username"
-								/>,
-							)}
-						</Form.Item>
-						<Form.Item>
-							{getFieldDecorator('ID', {
-								rules: [{ required: true, message: 'Please input your ID!' }],
-							})(
-								<Input
-									prefix={<Icon type="idcard" style={{ color: 'rgba(0,0,0,.25)' }} />}
-									placeholder="ID"
 								/>,
 							)}
 						</Form.Item>

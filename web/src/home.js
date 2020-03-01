@@ -2,25 +2,28 @@ import React, { Component } from 'react';
 import {Carousel} from 'antd'
 import img1 from './assets/img1.jpg'
 import img2 from './assets/img2.jpg'
+import img3 from './assets/img3.jpg'
+import img4 from './assets/img4.jpg'
 import styles from './home.module.css'
+
 
 const pictures = [
 	{
-	  title: "标题",
-	  content: "内容内容内容内容内容内容内容",
-	  image: img1
+	  title: "",
+	  content: "",
+	  image: img3
 	},
 	{
-	  title: "标题",
-	  content: "内容内容内容内容内容内容内容",
-	  image: img2
+	  title: "",
+	  content: "",
+	  image: img4
 	},
   ];
 
 class Home extends Component{
 	render(){
 		return (
-			
+			<div>
 				<Carousel autoplay effect="fade">
 				{pictures.map(news => (
 					<div key={news.title} className={styles.container}>
@@ -35,6 +38,7 @@ class Home extends Component{
 					</div>
 				))}
 				</Carousel>
+			</div>
 		)
 	}
 }

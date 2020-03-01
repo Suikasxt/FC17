@@ -54,10 +54,11 @@ def disbandTeam(team):
 	return True, 'Disband successfully.'
 
 #根据token和ID获取
-def getUserInfoToken(token, ID):
-	headers = {'authorization' : 'Bearer token=' + str(token)}
-	url = server + "/v1/users/" + str(ID)
-	res = requests.get(url, headers = headers)
+def getUserInfoToken(token):
+	headers = {"Content-Type": "application/json"}
+	data = {'token' : str(token)}
+	url = server + "/v1/users/token/validate/"
+	res = requests.post(url, data = json.dumps(data), headers = headers)
 	if (res.status_code != 200):
 		result = 'Token not available.'
 	else:
@@ -70,15 +71,16 @@ def getUserInfoToken(token, ID):
 
 
 #根据username和password获取
-def getUserInfoPassword(username, ID, password):
+def getUserInfoPassword(username, password):
 	data = {'username' : username, 'password' : password}
 	url = server + "/v1/users/login"
+	headers = {"Content-Type": "application/json"} 
 	
-	res = requests.post(url, data = data)
+	res = requests.post(headers = headers, url = url, data = json.dumps(data))
 	if res.status_code != 200:
 		return "Invalid ID and password", res.status_code
 	token = json.loads(res.text)['token']
-	return getUserInfoToken(token, ID)
+	return getUserInfoToken(token)
 
 def getCurrentUser(request):
 	try:
