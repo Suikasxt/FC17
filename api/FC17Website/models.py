@@ -61,3 +61,38 @@ class AI(models.Model):
 	class Meta:
 		verbose_name = 'FileInfo'
 		ordering = ['-timestamp']
+
+def user_dirpath_test(instance, filename):
+	now = time.strftime('%Y%m%d%H%M%S')
+	exact_name = '{0}_{1}__{2}'.format(now, random.randint(0, 1000), filename)
+	while os.path.exists('fileupload_test/{0}'.format(exact_name)):
+		exact_name = '{0}_{1}__{2}'.format(now, random.randint(0, 1000), filename)
+	_path = 'fileupload_test/{0}'.format(exact_name)
+	instance.path = _path
+	instance.origin_name = filename
+	instance.exact_name = exact_name
+	return './' + _path
+
+class AI_test(models.Model):
+	filename = models.CharField(max_length = 255)
+	team_name = models.CharField(max_length=512)
+	team_mate1 = models.CharField(max_length=512)
+	team_mate2 = models.CharField(max_length=512)
+	team_mate3 = models.CharField(max_length=512)
+	description = models.CharField(max_length = 1000, null = True, blank = True, default = '')
+	file = models.FileField(upload_to = user_dirpath_test)
+	path = models.CharField(max_length = 500)
+	origin_name = models.CharField(max_length = 255, default = filename) #原文件名
+	exact_name = models.CharField(max_length = 255, default = origin_name) #所存文件名
+	timestamp = models.DateTimeField(auto_now_add = True)
+	selected = models.BooleanField(default = False)
+	rank_daily = models.IntegerField(default = 0) #日榜排名
+	rank_overall = models.IntegerField(default = 0) #总榜排名
+	score = models.IntegerField(default = 0)
+
+	def __unicode__(self):
+		return self.filename
+
+	class Meta:
+		verbose_name = 'FileInfo_test'
+		ordering = ['-timestamp']

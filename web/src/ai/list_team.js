@@ -10,6 +10,7 @@ class AIList_team extends Component{
 	state = {
 		list:[],
 		selected_id:-1,
+		load:true,
 	}
 
 	getAIList = () => {
@@ -21,6 +22,7 @@ class AIList_team extends Component{
                 withCredentials: true
             },
 			success: function (result) {
+				this.setState({load:false})
 				if(result.result){
 					this.setState({list : result.data});
 					console.log(this.state.list)
@@ -59,7 +61,10 @@ class AIList_team extends Component{
 	}
 
 	dowload_request = (pk) => {
-		this.props.history.push("/ai/file_download/"+pk+'/');
+		let url = global.constants.server + 'api/ai/download/'+pk+'/';
+		let a = document.createElement('a');
+		a.href = url;
+		a.click();
 	}
 
 	componentWillMount(){
@@ -147,7 +152,7 @@ class AIList_team extends Component{
 			)
 		}
 
-		if (this.state.list == null){
+		if (this.state.load == true){
 			return (
 				<Loading></Loading>
 			)

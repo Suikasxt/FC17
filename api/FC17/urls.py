@@ -62,4 +62,7 @@ urlpatterns = [
     path('api/ai/list_team/', api_ai.list_team),
     path('api/ai/select/<int:pk>/', api_ai.select),
     path('api/ai/download/<int:pk>/', api_ai.filedownload),
+
+    path('api/ai_test/upload/', api_ai.upload_test),
+    path('api/leaderboard_test/daily/', api_ai.leaderboard_test),
 ]

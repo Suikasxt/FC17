@@ -148,7 +148,7 @@ def manage(request):
 
 
 def leaderboard(request):
-	teamList = Team.objects.order_by('-id', 'score')
+	teamList = Team.objects.order_by('-score', 'id')
 	result = []
 	for index, team in enumerate(teamList):
 		score = team.score

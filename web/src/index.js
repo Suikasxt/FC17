@@ -14,11 +14,12 @@ import TeamDetail from './team/detail.js';
 import TeamManage from './team/manage.js';
 import Notice from './notice.js';
 import Leaderboard from './team/leaderboard.js';
+import Leaderboard_test from './team/leaderboard_test.js';
 import AIList from './ai/list.js'
 import AIUpload from './ai/upload.js'
 import AIList_team from './ai/list_team.js'
-import File_download from './ai/file_download.js'
 import ASTA_logo from './assets/ASTA_logo.jpg'
+import AIUpload_test from './ai/upload_test.js'
 
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
@@ -206,6 +207,26 @@ class App extends React.Component {
 									<span>Leaderboard</span>
 								</Link>
 							</Menu.Item>
+							<SubMenu
+								key="test_game"
+								title={
+									<span>
+										<Icon type="android" />
+										<span>测试赛</span>
+									</span>
+								}
+							>
+								<Menu.Item key="upload_test" >
+									<Link to="/ai/upload_test">
+										<span>Upload</span>
+									</Link>
+								</Menu.Item>
+								<Menu.Item key="ai" >
+									<Link to="/team/leaderboard_test">
+										<span>Leaderboard</span>
+									</Link>
+								</Menu.Item>
+							</SubMenu>
 						</Menu>
 					</Sider>
 					<Layout>
@@ -215,7 +236,7 @@ class App extends React.Component {
 								<div>{Tips}</div>
 							</div>
 							<div>
-								<Button type="primary" onClick={(e) => this.download(global.constants.server + 'media/FC17_UserPackage1.2.rar')}>选手包下载</Button>
+								<Button type="primary" onClick={(e) => this.download(global.constants.server + 'media/FC17_UserPackage1.2.zip')}>选手包下载</Button>
 							</div>
 						</Header>
 						<Content style={{ margin: '10px 16px' }}>
@@ -284,12 +305,13 @@ class App extends React.Component {
 									{...props}
 								/>}
 							/>
-							<Route path ="/ai/file_download/:pk" exact render={props =>
-								<File_download
+							<Route path ="/ai/upload_test" exact render={props =>
+								<AIUpload_test
 									user={this.state.user}
 									{...props}
 								/>}
 							/>
+							<Route path ="/team/leaderboard_test" exact component={Leaderboard_test}/>
 						</Content>
 						<Footer style={{ textAlign: 'center' }}>&copy; FC17, DAASTA, 2020</Footer>
 					</Layout>

@@ -8,7 +8,8 @@ import { message} from 'antd';
 
 class AIList extends Component{
 	state = {
-		list:[]
+		list:[],
+		load:true,
 	}
 	getAIList = () => {
 		let url = global.constants.server + 'api/ai/list/';
@@ -19,10 +20,10 @@ class AIList extends Component{
                 withCredentials: true
             },
 			success: function (result) {
+				this.setState({load:false});
 				if(result.result)
 				{
 					this.setState({list : result.data});
-					console.log(this.state.list)
 				}
 				else
 				{
@@ -37,7 +38,10 @@ class AIList extends Component{
     }
 	
 	dowload_request = (pk) => {
-		this.props.history.push("/ai/file_download/"+pk+'/');
+		let url = global.constants.server + 'api/ai/download/'+pk+'/';
+		let a = document.createElement('a');
+		a.href = url;
+		a.click();
 	}
 
 	upload_redirect = (event) => {
@@ -106,7 +110,7 @@ class AIList extends Component{
 	}
 	
 	render(){
-		if (this.state.list == null){
+		if (this.state.load == true){
 			return (
 				<Loading></Loading>
 			)
@@ -179,8 +183,8 @@ class AIList extends Component{
 				</Grommet>
 				</Box>
 			<Button icon={<Upload/>}
-			history={this.props.history}
-			label="Upload" onClick={this.upload_redirect}></Button>
+				history={this.props.history}
+				label="Upload" onClick={this.upload_redirect}></Button>
 			</div>
 			)
             

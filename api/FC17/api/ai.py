@@ -1,5 +1,5 @@
 from django.http import HttpResponse,StreamingHttpResponse
-from FC17Website.models import User,AI
+from FC17Website.models import User,AI, AI_test
 from FC17 import tools
 from FC17.api.notice import DateEncoder
 from FC17.settings import BASE_DIR
@@ -13,8 +13,6 @@ SUFFIX='.cpp'
 def upload(request):
     user = tools.getCurrentUser(request)
     res = {}
-    print(request.POST['filename'])
-    print(request.POST['description'])
     if user != None and request.method == 'POST' and request.POST.get('filename') and type(request.POST.get('description'))!=type(None):
         #limit the size and type of file to be uploaded
         myfile = request.FILES['file']
@@ -48,6 +46,43 @@ def upload(request):
         res['message'] = 'Error'
 
     return HttpResponse(json.dumps(res), content_type = 'application/json')
+
+
+def upload_test(request):
+    res = {}
+    if request.POST.get('team_name') and request.method == 'POST' and request.POST.get('filename') and type(request.POST.get('description'))!=type(None):
+        #limit the size and type of file to be uploaded
+        myfile = request.FILES['file']
+        if myfile:
+            if myfile.size >= 1048576:
+                res['error']=True
+                res['message'] = 'Size of file should be less than 1MB.'
+            elif myfile.name.endswith(SUFFIX) == False:
+                res['error']=True
+                res['message'] = 'Only {0} file will be accepted.'.format(SUFFIX)
+            else:
+                fileupload = AI_test()
+                fileupload.filename = request.POST['filename']
+                fileupload.team_name = request.POST['team_name']
+                fileupload.team_mate1 = request.POST['team_mate1']
+                fileupload.team_mate2 = request.POST['team_mate2']
+                fileupload.team_mate3 = request.POST['team_mate3']
+                fileupload.description = request.POST['description']
+                fileupload.file = myfile
+                fileupload.save()
+                print('Code test uploaded. team={0}, name={1}'.format(request.POST['team_name'], fileupload.filename))
+
+                res['error']=False
+                res['message'] = 'You have successfully uploaded the code.'
+        else:
+            res['error']=True
+            res['message'] = 'File does not exist.'
+    else:
+        res['error'] = True
+        res['message'] = 'Error'
+
+    return HttpResponse(json.dumps(res), content_type = 'application/json')
+
 
 def list(request):
     user = tools.getCurrentUser(request)
@@ -172,7 +207,7 @@ def filedownload(request ,pk):
     return response
 
 def leaderboard(request):
-	aiList = AI.objects.order_by('-id', 'score')
+	aiList = AI.objects.order_by( '-score', 'id')
 	result = []
 	for index, ai in enumerate(aiList):
 		aiInfo = {'rank' : index + 1, 'id' : ai.id, 'filename' : ai.filename, 'description' : ai.description, 'score' : ai.score, 'teamName': ai.team.name}
@@ -181,4 +216,13 @@ def leaderboard(request):
 			aiInfo['dll'] = dllPath
 		result.append(aiInfo)
 		
+	return HttpResponse(json.dumps(result), content_type = 'application/json')
+
+def leaderboard_test(request):
+	aiList = AI_test.objects.order_by('-score', 'id')
+	result = []
+	for index, ai in enumerate(aiList):
+		aiInfo = {'rank' : index + 1, 'id' : ai.id, 'filename' : ai.filename, 'description' : ai.description, 'score' : ai.score, 'teamName': ai.team_name}
+		result.append(aiInfo)
+        
 	return HttpResponse(json.dumps(result), content_type = 'application/json')
