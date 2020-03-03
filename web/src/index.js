@@ -60,12 +60,15 @@ class App extends React.Component {
 			async: true,
 			success: function (result) {
 				if (result.id && result !== this.state.user){
-					this.setState({user: result, userLoading: false});
+					this.setState({user: result});
 				}
 			}.bind(this),
 			beforeSend: function(){
 				this.setState({userLoading: true})
-			}.bind(this)
+			}.bind(this),
+			complete: function(){
+				this.setState({userLoading: false})
+			}.bind(this),
 		});
 	}
 	
