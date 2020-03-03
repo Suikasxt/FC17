@@ -239,7 +239,7 @@ class App extends React.Component {
 								<div>{Tips}</div>
 							</div>
 							<div>
-								<Button type="primary" onClick={(e) => this.download(global.constants.server + 'media/FC17_UserPackage1.2.zip')}>选手包下载</Button>
+								<Button type="primary" onClick={(e) => this.download(global.constants.server + 'media/FC17_UserPackage1.5.rar')}>选手包下载</Button>
 							</div>
 						</Header>
 						<Content style={{ margin: '10px 16px' }}>

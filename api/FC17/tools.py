@@ -64,9 +64,14 @@ def getUserInfoToken(token):
 	else:
 		try:
 			result = json.loads(res.text)
+			url = server + "/v1/users/" + str(result['id'])
+			headers = {'authorization' : 'Bearer ' + str(token)}
+			res = requests.get(url, headers = headers)
+			result = json.loads(res.text)
 			result['token'] = token
 		except:
 			result = 'System Error'
+			res.status_code = 0
 	return result, res.status_code
 
 
